@@ -16,7 +16,6 @@
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
   }
 
-    .title h2,
-    .title p {
+    .title h2, .title p {
         margin: 0.5px ;
     }

@@ -16,12 +16,39 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.style.display = "block";
   });
 
+  document.getElementById("register-link").addEventListener("click", () => {
+    modalTitle.textContent = "Register";
+    modalBody.innerHTML = `
+      <form id="registration-form">
+        <label for="username">Username:</label><br>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="confirm-password">Confirm Password:</label><br>
+        <input type="confirm password" id="confirm-password" name="confirm-password" required><br><br>
+        
+        <button type="submit">Register</button>
+      </form>
+    `;
+    modal.style.display = "block";
+  });
+
   closeModal.addEventListener("click", () => {
     modal.style.display = "none";
   });
 
   window.addEventListener("click", (event) => {
     if (event.target === modal) {
+      modal.style.display = "none";
+    }
+  });
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
       modal.style.display = "none";
     }
   });

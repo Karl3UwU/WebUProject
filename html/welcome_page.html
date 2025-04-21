@@ -3,20 +3,22 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>4 Column Layout</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="stylesheet" href="title.css" />
-  <link rel="stylesheet" href="login.css" />
+  <title>Welcome Page</title>
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="../css/login.css" />
+  <link rel="stylesheet" href="../css/title.css" />
+  <link rel="stylesheet" href="../css/modal.css" />
+  <link rel="stylesheet" href="../css/column.css" />
 </head>
 
 <body>
-  <a href="page1.html" class="title-link">
+  <a href="welcome_page.html" class="title-link">
     <div class="title">
       <h2>Bookmark</h2>
       <p>
         A Benchmark for your library - 
         <span class="small-text">designed by Cotelea Carlo and Tudor Alexandru</span>
-      </p>       
+      </p>
     </div>
   </a>
 
@@ -35,15 +37,22 @@
       <h3>Discover & read more</h3>
       <div class="login-buttons">
         <button class="google-login">
-          <img src="google.webp" class="button-icon" />
+          <img src="../images/google.webp" class="button-icon" />
           Log in with Google
         </button>
         <button class="account-login">
-          <img src="user.png" class="button-icon" />
+          <img src="../images/user.png" class="button-icon" />
           Log in with Your Account
         </button>
+        <h3>Not a member yet? <a class="small-text" href="#" id="register-link">Register</a> now.</h3>
 
-        <h3>Not a member yet? <a class="small-text" href="register.html">Register</a> now.</h3>
+          <div id="modal" class="modal">
+          <div class="modal-content">
+              <span id="close-modal" class="close">&times;</span>
+              <h3 id="modal-title"></h3>
+              <div id="modal-body"></div>
+            </div>
+          </div>
 
           <h3>By signing in, you agree to our 
             <a class="small-text" href="#" id="terms-link">Terms of Service</a> and 

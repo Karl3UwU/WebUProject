@@ -1,12 +1,4 @@
-body {
-    background-color:#333;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
-    background-color: #f4f4f4;
-  }
-  
-  .container {
+.container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
@@ -31,21 +23,4 @@ body {
   .column-first:hover {
     transform: translateY(-8px);
     box-shadow: 0 12px 20px rgba(0, 0, 0, 0.2);
-  }
-
-
-  h2 {
-    margin-top: 0;
-    font-size: 3rem;
-    color: #333;
-  }
-  
-  p {
-    color: #666;
-    font-size: 1.4rem;
-  }
-
-  .small-text {
-    font-size: 0.8em; 
-    color: #666; 
   }
