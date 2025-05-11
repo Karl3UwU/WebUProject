@@ -5,16 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const closeModal = document.getElementById("close-modal");
 
   document.getElementById("terms-link").addEventListener("click", () => {
-    modalTitle.textContent = "Terms of Service";
-    modalBody.textContent = "Noone reads the 'Terms of Service' anyway. So we will not be held responsible for anything.";
-    modal.style.display = "block";
-  });
+  modalTitle.textContent = "Terms of Service";
+  modalBody.innerHTML = "Noone reads the 'Terms of Service' anyway. So we will not be held responsible for anything.";
+  modal.style.display = "block";
+});
 
-  document.getElementById("privacy-link").addEventListener("click", () => {
-    modalTitle.textContent = "Privacy Policy";
-    modalBody.textContent = "The 'Privacy Policy' is that there is no Privacy Policy. We WILL use your data.";
-    modal.style.display = "block";
-  });
+document.getElementById("privacy-link").addEventListener("click", () => {
+  modalTitle.textContent = "Privacy Policy";
+  modalBody.innerHTML = "The 'Privacy Policy' is that there is no Privacy Policy. We WILL use your data.";
+  modal.style.display = "block";
+});
 
   document.getElementById("register-link").addEventListener("click", () => {
     modalTitle.textContent = "Register";

@@ -5,7 +5,8 @@
 --     user_id NUMBER PRIMARY KEY,
 --     username VARCHAR2(50),
 --     email VARCHAR2(100),
---     password VARCHAR2(100)
+--     password VARCHAR2(100),
+--     role VARCHAR2(10)
 -- );
 
 -- CREATE TABLE Books ADD(
@@ -39,6 +40,38 @@
 --     year_published NUMBER,
 --     edition       VARCHAR2(50)
 -- );
+-- /
+
+-- CREATE OR REPLACE TYPE User_interface AS OBJECT (
+--     user_id   NUMBER,
+--     username  VARCHAR2(50),
+--     password  VARCHAR2(50),
+--     email     VARCHAR2(100),
+--     role VARCHAR2(10),
+--     MEMBER FUNCTION get_role RETURN VARCHAR2
+-- ) NOT FINAL;
+-- /
+-- CREATE OR REPLACE TYPE User_default UNDER User_interface (
+--     OVERRIDING MEMBER FUNCTION get_role RETURN VARCHAR2
+-- );
+-- /
+-- CREATE OR REPLACE TYPE User_admin UNDER User_interface (
+--     OVERRIDING MEMBER FUNCTION get_role RETURN VARCHAR2
+-- );
+-- /
+-- CREATE OR REPLACE TYPE BODY User_default AS
+--     OVERRIDING MEMBER FUNCTION get_role RETURN VARCHAR2 IS
+--     BEGIN
+--         RETURN 'Default';
+--     END;
+-- END;
+-- /
+-- CREATE OR REPLACE TYPE BODY User_admin AS
+--     OVERRIDING MEMBER FUNCTION get_role RETURN VARCHAR2 IS
+--     BEGIN
+--         RETURN 'Admin';
+--     END;
+-- END;
 -- /
 
 -- DECLARE
@@ -89,5 +122,10 @@
 --     VALUES (book_10.book_id, book_10.title, book_10.publisher, book_10.year_published, book_10.edition);
 
 --     DBMS_OUTPUT.PUT_LINE('10 books inserted successfully.');
+
+--     INSERT INTO Users (user_id, username, password, email, role)
+--     VALUES (u1.user_id, u1.username, u1.password, u1.email, u1.role);
+--     INSERT INTO Users (user_id, username, password, email, role)
+--     VALUES (u2.user_id, u2.username, u2.password, u2.email, u2.role);
 -- END;
 -- /
