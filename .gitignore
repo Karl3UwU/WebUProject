@@ -1,1 +1,6 @@
 .DS_Store
+.idea
+.vscode
+target
+# the permissions script from the directory sql:
+/sql/permissions.sql
