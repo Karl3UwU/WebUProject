@@ -22,7 +22,7 @@ public class Router implements HttpHandler {
         } else {
             // Serve file
             if (path.equals("/")) {
-                path = "/pages/welcome_page.html";
+                path = "/index.html";
                 System.out.println("Modifier to default path of: " + path);
             }
             fileHandler.serveFile(path, exchange);
