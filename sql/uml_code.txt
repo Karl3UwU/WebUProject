@@ -1,0 +1,40 @@
+@startuml
+entity User {
+  * user_id : int <<PK>>
+  --
+  username : string
+  email : string
+  password : string
+  role : string
+}
+
+entity Category {
+  * category_id : int <<PK>>
+  --
+  category_name : string
+}
+
+entity Book {
+  * book_id : int <<PK>>
+  --
+  title : string
+  publisher : string
+  year_published : int
+  edition : string
+  category_id : int <<FK>>
+}
+
+entity Review {
+  * review_id : int <<PK>>
+  --
+  user_id : int <<FK>>
+  book_id : int <<FK>>
+  content : CLOB
+  rating : int [1-5]
+}
+
+' Relationships
+User "1" --> "0..*" Review : writes
+Book "1" --> "0..*" Review : receives
+Category "1" --> "0..*" Book : groups
+@enduml
