@@ -278,6 +278,7 @@ public class DatabaseManager {
         }
     }
 
+    
     // --------------------------- ReadingList methods --------------------------- //
     // returns a list of books read by an user id
     public List<Map<String, Object>> getBooksReadByUser(int userId) {
@@ -393,6 +394,7 @@ public class DatabaseManager {
             return false;
         }
     }
+
 
     // --------------------------- Category methods --------------------------- //
     // returns a list of all categories

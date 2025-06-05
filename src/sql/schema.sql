@@ -286,6 +286,20 @@ LEFT JOIN
 GROUP BY 
     b.title, c.category_name, a.name;
 
+CREATE OR REPLACE VIEW TopRatedBooks AS
+SELECT 
+    b.book_id,
+    b.title,
+    AVG(r.rating) AS average_rating
+FROM 
+    Books b
+JOIN 
+    Reviews r ON b.book_id = r.book_id
+GROUP BY 
+    b.book_id, b.title
+HAVING 
+    AVG(r.rating) >= 4.5;
+    
 -- Procedure
 CREATE OR REPLACE PROCEDURE list_books_by_category(p_category_name IN VARCHAR2) IS
     CURSOR book_cursor IS
