@@ -1,9 +1,9 @@
-package org.server.router;
+package org.server.router.annotations.mapping;
 
 import java.lang.annotation.*;
 
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)
-public @interface PostMapping {
+public @interface GetMapping {
     String value();
 }

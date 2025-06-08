@@ -8,7 +8,7 @@ import java.util.Base64;
 import java.nio.charset.StandardCharsets;
 
 public class JWTUtil {
-    private static final String SECRET = "super-secret-key";
+    private static final String SECRET = "super-secret-key-i-am-gay-i-like-men";
     private static final Gson gson = new Gson();
 
     public static String createToken(Object payload) {
@@ -28,14 +28,6 @@ public class JWTUtil {
 
         String expectedSig = hmacSha256(header + "." + body);
         return signature.equals(expectedSig);
-    }
-
-    public static <T> T parsePayload(String token, Class<T> clazz) {
-        String[] parts = token.split("\\.");
-        if (parts.length != 3) return null;
-
-        String body = new String(Base64.getUrlDecoder().decode(parts[1]), StandardCharsets.UTF_8);
-        return gson.fromJson(body, clazz);
     }
 
     private static String base64UrlEncode(String input) {

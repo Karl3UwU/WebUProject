@@ -8,10 +8,15 @@ import java.net.InetSocketAddress;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.server.controllers.TestController;
-
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpServer;
+import org.server.router.annotations.mapping.GetMapping;
+import org.server.router.annotations.mapping.PostMapping;
+import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.QueryParam;
+import org.server.router.annotations.request.RequestBody;
+import org.server.router.annotations.request.RequestHeader;
+import org.server.router.annotations.request.RequestParam;
 
 public class Router {
 
@@ -83,16 +88,18 @@ public class Router {
 
         if (route != null) {
             try {
-                Object result = route.method.invoke(route.controller);
+                Object[] args = resolveArguments(route.method, exchange);
+                Object result = route.method.invoke(route.controller, args);
                 response = result != null ? result.toString() : "";
-                exchange.sendResponseHeaders(200, response.length());
+                exchange.sendResponseHeaders(200, response.getBytes().length);
             } catch (Exception e) {
-                response = "500 Error: " + e.getMessage();
-                exchange.sendResponseHeaders(500, response.length());
+                e.printStackTrace();
+                response = "500 Internal Server Error: " + e.getMessage();
+                exchange.sendResponseHeaders(500, response.getBytes().length);
             }
         } else {
             response = "404 Not Found";
-            exchange.sendResponseHeaders(404, response.length());
+            exchange.sendResponseHeaders(404, response.getBytes().length);
         }
 
         try (OutputStream os = exchange.getResponseBody()) {
@@ -138,5 +145,67 @@ public class Router {
         if (path.endsWith(".svg")) return "image/svg+xml";
         if (path.endsWith(".ico")) return "image/x-icon";
         return "application/octet-stream";
+    }
+
+    private static Object[] resolveArguments(Method method, HttpExchange exchange) throws IOException {
+        var parameters = method.getParameters();
+        Object[] args = new Object[parameters.length];
+
+        Map<String, String> queryParams = parseQueryParams(exchange);
+        String requestBody = new String(exchange.getRequestBody().readAllBytes());
+
+        for (int i = 0; i < parameters.length; i++) {
+            var param = parameters[i];
+
+            if (param.isAnnotationPresent(RequestHeader.class)) {
+                var annotation = param.getAnnotation(RequestHeader.class);
+                String headerValue = exchange.getRequestHeaders().getFirst(annotation.value());
+                if (annotation.required() && headerValue == null) {
+                    throw new RuntimeException("Missing required header: " + annotation.value());
+                }
+                args[i] = headerValue;
+
+            } else if (param.isAnnotationPresent(RequestParam.class)) {
+                var annotation = param.getAnnotation(RequestParam.class);
+                String value = queryParams.get(annotation.value());
+                if (annotation.required() && value == null) {
+                    throw new RuntimeException("Missing required query param: " + annotation.value());
+                }
+                args[i] = value;
+
+            } else if (param.isAnnotationPresent(RequestBody.class)) {
+                args[i] = new com.google.gson.Gson().fromJson(requestBody, param.getType());
+
+            } else if (param.isAnnotationPresent(QueryParam.class)) {
+                var annotation = param.getAnnotation(QueryParam.class);
+                String value = queryParams.get(annotation.value());
+                if (annotation.required() && value == null) {
+                    throw new RuntimeException("Missing required query param: " + annotation.value());
+                }
+                args[i] = value;
+            }
+            else if (param.getType() == HttpExchange.class) {
+                args[i] = exchange;
+
+            } else {
+                args[i] = null;
+            }
+        }
+
+        return args;
+    }
+
+    private static Map<String, String> parseQueryParams(HttpExchange exchange) {
+        String query = exchange.getRequestURI().getQuery();
+        Map<String, String> result = new HashMap<>();
+        if (query != null) {
+            for (String param : query.split("&")) {
+                String[] parts = param.split("=");
+                if (parts.length == 2) {
+                    result.put(parts[0], parts[1]);
+                }
+            }
+        }
+        return result;
     }
 }
