@@ -1,16 +1,25 @@
 package org.server.router;
 
-import com.sun.net.httpserver.*;
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.server.controllers.TestController;
+
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpServer;
 
 public class Router {
 
     private static final Map<String, Route> routes = new HashMap<>();
 
     public static void startServer() throws IOException {
+        registerAllRoutes();
+
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
         server.createContext("/", Router::handleRequest);
         server.setExecutor(null);
@@ -18,18 +27,40 @@ public class Router {
         System.out.println("Server started on http://localhost:8080");
     }
 
+    public static void registerAllRoutes() {
+        for(Object controller : ControllerRegistry.getControllers()) {
+            registerRoutes(controller);
+        }
+    }
+
     private static void registerRoutes(Object controller) {
         Class<?> clazz = controller.getClass();
+
+        String basePath = "";
+        if (clazz.isAnnotationPresent(RequestMapping.class)) {
+            basePath = clazz.getAnnotation(RequestMapping.class).value();
+            if (!basePath.startsWith("/")) basePath = "/" + basePath;
+            if (basePath.endsWith("/")) basePath = basePath.substring(0, basePath.length() - 1);
+        }
+
         for (Method method : clazz.getDeclaredMethods()) {
             if (method.isAnnotationPresent(GetMapping.class)) {
                 String path = method.getAnnotation(GetMapping.class).value();
-                routes.put("GET:" + path, new Route(controller, method));
+                String fullPath = normalizePath(basePath, path);
+                routes.put("GET:" + fullPath, new Route(controller, method));
             }
+
             if (method.isAnnotationPresent(PostMapping.class)) {
                 String path = method.getAnnotation(PostMapping.class).value();
-                routes.put("POST:" + path, new Route(controller, method));
+                String fullPath = normalizePath(basePath, path);
+                routes.put("POST:" + fullPath, new Route(controller, method));
             }
         }
+    }
+
+    private static String normalizePath(String base, String path) {
+        if (!path.startsWith("/")) path = "/" + path;
+        return base + path;
     }
 
     private static void handleRequest(HttpExchange exchange) throws IOException {
