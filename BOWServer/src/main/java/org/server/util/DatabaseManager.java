@@ -1,4 +1,4 @@
-package org.server.utils;
+package org.server.util;
 import java.sql.*;
 import java.util.*;
 
