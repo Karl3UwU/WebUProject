@@ -19,11 +19,11 @@
         </div>
 
         <div class="auth-buttons">
-            <a href="#" class="btn btn-secondary" id="loginBtn">
+            <a href="login.html" class="btn btn-secondary" id="loginBtn">
                 <img src="images/log-in.svg" alt="Log in" class="icon">
                 Login
             </a>
-            <a href="#" class="btn btn-primary" id="signupBtn">
+            <a href="register.html" class="btn btn-primary" id="signupBtn">
                 <img src="images/user-plus.svg" alt="Sign up" class="icon">
                 Sign Up
             </a>
@@ -31,71 +31,4 @@
     </nav>
 </header>
 
-<script>
-    // Header-specific functionality
-    function initializeHeader() {
-        // Mobile menu toggle
-        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
-        const navLinks = document.getElementById('navLinks');
-
-        if (mobileMenuToggle && navLinks) {
-            mobileMenuToggle.addEventListener('click', function() {
-                navLinks.classList.toggle('active');
-
-                // Toggle icon
-                const icon = document.getElementById('menuIcon');
-                if (navLinks.classList.contains('active')) {
-                    icon.src = 'images/x.svg';
-                    icon.alt = 'Close menu';
-                } else {
-                    icon.src = 'images/menu.svg';
-                    icon.alt = 'Open menu';
-                }
-
-            });
-        }
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', function(e) {
-            if (!e.target.closest('.nav') && navLinks && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                const icon = document.getElementById('menuIcon');
-                icon.src = 'images/menu.svg';
-                icon.alt = 'Open menu';
-            }
-        });
-
-        // Active page highlighting
-        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
-        const navLinksElements = document.querySelectorAll('.nav-link');
-
-        navLinksElements.forEach(link => {
-            if (link.getAttribute('href') === currentPage) {
-                link.classList.add('active');
-            }
-        });
-
-        // Authentication button handlers
-        const loginBtn = document.getElementById('loginBtn');
-        const signupBtn = document.getElementById('signupBtn');
-
-        if (loginBtn) {
-            loginBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                showAuthModal('login');
-            });
-        }
-
-        if (signupBtn) {
-            signupBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                showAuthModal('signup');
-            });
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', initializeHeader);
-
-    initializeHeader()
-
-</script>
+<script src="js/loader.js"></script>

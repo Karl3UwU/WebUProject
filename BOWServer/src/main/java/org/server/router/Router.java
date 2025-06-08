@@ -20,11 +20,11 @@ public class Router {
     public static void startServer() throws IOException {
         registerAllRoutes();
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
         server.createContext("/", Router::handleRequest);
         server.setExecutor(null);
         server.start();
-        System.out.println("Server started on http://localhost:8080");
+        System.out.println("Server started on http://localhost:80");
     }
 
     public static void registerAllRoutes() {
