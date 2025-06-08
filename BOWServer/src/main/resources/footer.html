@@ -8,20 +8,17 @@
                 <h3>Books of Web</h3>
                 <p>Connecting readers with their next favorite book through community-driven discovery and reviews.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <i data-lucide="twitter"></i>
-                    </a>
                     <a href="#" class="social-link" aria-label="Facebook">
-                        <i data-lucide="facebook"></i>
+                        <img src="images/facebook.svg" alt="Facebook" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="Instagram">
-                        <i data-lucide="instagram"></i>
+                        <img src="images/instagram.svg" alt="Instagram" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="YouTube">
-                        <i data-lucide="youtube"></i>
+                        <img src="images/youtube.svg" alt="YouTube" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="Discord">
-                        <i data-lucide="message-circle"></i>
+                        <img src="images/discord.svg" alt="Discord" class="icon">
                     </a>
                 </div>
             </div>
@@ -66,7 +63,7 @@
                     <div class="newsletter-input-group">
                         <input type="email" placeholder="Enter your email" class="newsletter-input" required>
                         <button type="submit" class="newsletter-btn">
-                            <i data-lucide="send"></i>
+                            <img src="images/send.svg" alt="Subscribe" class="icon">
                         </button>
                     </div>
                     <p class="newsletter-disclaimer">We respect your privacy. Unsubscribe at any time.</p>
@@ -83,7 +80,7 @@
                     <a href="cookies.html">Cookie Policy</a>
                     <span>•</span>
                     <button id="themeToggle" class="theme-toggle">
-                        <i data-lucide="sun"></i>
+                        <img src="images/sun.svg" alt="Toggle Theme" class="icon">
                         <span>Light Mode</span>
                     </button>
                 </div>
@@ -179,16 +176,33 @@
         color: #667eea;
     }
 
+    .footer-content {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 3rem;
+        margin-bottom: 10px;
+    }
+    @media (max-width: 1024px) {
+        .footer-content {
+            grid-template-columns: repeat(2, 1fr);
+        }
+    }
+
     @media (max-width: 768px) {
         .footer-bottom-content {
             flex-direction: column;
             text-align: center;
         }
-
         .newsletter-input-group {
             flex-direction: column;
         }
+        .footer-content {
+            grid-template-columns: 1fr;
+            text-align: center;
+        }
     }
+
+
 </style>
 
 <script>
@@ -214,31 +228,32 @@
         }
 
         // Theme toggle functionality
+        // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
+            themeToggle.addEventListener('click', function () {
                 document.body.classList.toggle('dark-theme');
                 const isDark = document.body.classList.contains('dark-theme');
 
-                const icon = this.querySelector('i');
+                const icon = this.querySelector('img');
                 const text = this.querySelector('span');
 
                 if (isDark) {
-                    icon.setAttribute('data-lucide', 'moon');
+                    icon.src = 'images/moon.svg';
+                    icon.alt = 'Dark mode';
                     text.textContent = 'Dark Mode';
                 } else {
-                    icon.setAttribute('data-lucide', 'sun');
+                    icon.src = 'images/sun.svg';
+                    icon.alt = 'Light mode';
                     text.textContent = 'Light Mode';
                 }
 
-                lucide.createIcons();
-
-                // Show notification
                 if (typeof showNotification === 'function') {
                     showNotification(`Switched to ${isDark ? 'dark' : 'light'} mode`, 'info');
                 }
             });
         }
+
 
         // Social link tracking (for analytics)
         const socialLinks = document.querySelectorAll('.social-link');
@@ -257,8 +272,7 @@
         });
     }
 
-    // Call this function when the footer is loaded
-    if (typeof lucide !== 'undefined') {
-        document.addEventListener('DOMContentLoaded', initializeFooter);
-    }
+    document.addEventListener('DOMContentLoaded', initializeFooter);
+
+    initializeFooter()
 </script>
