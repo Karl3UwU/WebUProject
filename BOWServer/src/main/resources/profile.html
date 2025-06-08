@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Profile | Books of Web</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/profile.css" />
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+<div id="header"></div>
+
+<main class="container profile-page">
+    <section class="profile-header card">
+        <div class="profile-header-content">
+            <h1 class="profile-title">Welcome, <span id="userName">User</span></h1>
+            <p class="profile-email" id="userEmail">Email: user@example.com</p>
+            <button class="btn btn-secondary" id="editProfileBtn">Edit Profile</button>
+        </div>
+    </section>
+
+    <section class="profile-sections">
+        <div class="card">
+            <h2>Currently Reading</h2>
+            <div class="book-list" id="readingList">
+                <p>No books currently reading.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Highlighted Books</h2>
+            <div class="book-list" id="highlightedBooks">
+                <p>No highlighted books yet.</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>Your Reviews</h2>
+            <div class="review-list" id="userReviews">
+                <p>You haven't posted any reviews yet.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<div id="footer"></div>
+
+<script src="js/script.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/header.js"></script>
+</body>
+</html>
