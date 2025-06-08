@@ -1,0 +1,99 @@
+<!-- Reusable Header Component -->
+<!-- Include this in other pages with: document.getElementById('header').innerHTML = headerHTML; -->
+
+<header class="header">
+    <nav class="nav">
+        <a href="index.html" class="logo">Books of Web</a>
+
+        <!-- Mobile menu toggle -->
+        <button class="mobile-menu-toggle" id="mobileMenuToggle">
+            <i data-lucide="menu"></i>
+        </button>
+
+        <div class="nav-links" id="navLinks">
+            <a href="browse.html" class="nav-link">Browse</a>
+            <a href="categories.html" class="nav-link">Categories</a>
+            <a href="reviews.html" class="nav-link">Reviews</a>
+            <a href="community.html" class="nav-link">Community</a>
+            <a href="about.html" class="nav-link">About</a>
+        </div>
+
+        <div class="auth-buttons">
+            <a href="#" class="btn btn-secondary" id="loginBtn">
+                <i data-lucide="log-in"></i>
+                Login
+            </a>
+            <a href="#" class="btn btn-primary" id="signupBtn">
+                <i data-lucide="user-plus"></i>
+                Sign Up
+            </a>
+        </div>
+    </nav>
+</header>
+
+<script>
+    // Header-specific functionality
+    function initializeHeader() {
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+
+        if (mobileMenuToggle && navLinks) {
+            mobileMenuToggle.addEventListener('click', function() {
+                navLinks.classList.toggle('active');
+
+                // Toggle icon
+                const icon = this.querySelector('i');
+                if (navLinks.classList.contains('active')) {
+                    icon.setAttribute('data-lucide', 'x');
+                } else {
+                    icon.setAttribute('data-lucide', 'menu');
+                }
+                lucide.createIcons();
+            });
+        }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.nav') && navLinks && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                const icon = mobileMenuToggle.querySelector('i');
+                icon.setAttribute('data-lucide', 'menu');
+                lucide.createIcons();
+            }
+        });
+
+        // Active page highlighting
+        const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+        const navLinksElements = document.querySelectorAll('.nav-link');
+
+        navLinksElements.forEach(link => {
+            if (link.getAttribute('href') === currentPage) {
+                link.classList.add('active');
+            }
+        });
+
+        // Authentication button handlers
+        const loginBtn = document.getElementById('loginBtn');
+        const signupBtn = document.getElementById('signupBtn');
+
+        if (loginBtn) {
+            loginBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showAuthModal('login');
+            });
+        }
+
+        if (signupBtn) {
+            signupBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                showAuthModal('signup');
+            });
+        }
+    }
+
+    // Call this function when the header is loaded
+    if (typeof lucide !== 'undefined') {
+        document.addEventListener('DOMContentLoaded', initializeHeader);
+    }
+</script>
