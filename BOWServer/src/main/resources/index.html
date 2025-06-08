@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Books of Web - Discover Your Next Great Read</title>
+  <link rel="stylesheet" href="../css/styles.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.js"></script>
+</head>
+<body>
+<!-- Header -->
+<header class="header">
+  <nav class="nav">
+    <a href="index.html" class="logo">Books of Web</a>
+    <div class="nav-links">
+      <a href="#" class="nav-link">Browse</a>
+      <a href="#" class="nav-link">Categories</a>
+      <a href="#" class="nav-link">Reviews</a>
+      <a href="#" class="nav-link">About</a>
+    </div>
+    <div class="auth-buttons">
+      <a href="#" class="btn btn-secondary" id="loginBtn">
+        <img src="images/log-in.svg" alt="Log in" class="icon">
+        Login
+      </a>
+      <a href="#" class="btn btn-primary" id="signupBtn">
+        <i data-lucide="user-plus"></i>
+        Sign Up
+      </a>
+    </div>
+  </nav>
+</header>
+
+<!-- Main Content -->
+<main>
+  <!-- Hero Section -->
+  <section class="hero">
+    <h1>Discover Your Next Great Read</h1>
+    <p>Join thousands of book lovers discovering, reviewing, and sharing their favorite books from across the web</p>
+
+    <!-- Search Bar -->
+    <div class="search-container">
+      <div class="search-wrapper">
+        <input type="text" class="search-input" placeholder="Search for books, authors, or genres..." id="searchInput">
+        <button class="search-btn" id="searchBtn">
+          <i data-lucide="search"></i>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- News Feed Section -->
+  <section class="news-feed">
+    <div class="container">
+      <div class="section-header">
+        <h2>Latest Book News & Updates</h2>
+        <p>Stay up to date with the latest in the book world</p>
+      </div>
+
+      <div class="news-grid" id="newsGrid">
+        <!-- News items will be populated by JavaScript -->
+      </div>
+
+      <div class="load-more-container">
+        <button class="btn btn-secondary" id="loadMoreBtn">
+          <i data-lucide="plus-circle"></i>
+          Load More Articles
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Books Section -->
+  <section class="featured-books">
+    <div class="container">
+      <div class="section-header">
+        <h2>Trending Books</h2>
+        <p>Popular picks from our community</p>
+      </div>
+
+      <div class="books-grid" id="booksGrid">
+        <!-- Featured books will be populated by JavaScript -->
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-content">
+      <div class="footer-section">
+        <h3>Books of Web</h3>
+        <p>Connecting readers with their next favorite book</p>
+        <div class="social-links">
+          <a href="#" class="social-link">
+            <i data-lucide="twitter"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i data-lucide="facebook"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i data-lucide="instagram"></i>
+          </a>
+          <a href="#" class="social-link">
+            <i data-lucide="youtube"></i>
+          </a>
+        </div>
+      </div>
+
+      <div class="footer-section">
+        <h4>Discover</h4>
+        <ul>
+          <li><a href="#">New Releases</a></li>
+          <li><a href="#">Best Sellers</a></li>
+          <li><a href="#">Book Reviews</a></li>
+          <li><a href="#">Author Interviews</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Community</h4>
+        <ul>
+          <li><a href="#">Reading Groups</a></li>
+          <li><a href="#">Book Clubs</a></li>
+          <li><a href="#">Discussion Forums</a></li>
+          <li><a href="#">Reading Challenges</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-section">
+        <h4>Support</h4>
+        <ul>
+          <li><a href="#">Help Center</a></li>
+          <li><a href="#">Contact Us</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Terms of Service</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>&copy; 2025 Books of Web. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
