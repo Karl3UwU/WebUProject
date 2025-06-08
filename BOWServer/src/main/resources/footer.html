@@ -8,20 +8,17 @@
                 <h3>Books of Web</h3>
                 <p>Connecting readers with their next favorite book through community-driven discovery and reviews.</p>
                 <div class="social-links">
-                    <a href="#" class="social-link" aria-label="Twitter">
-                        <i data-lucide="twitter"></i>
-                    </a>
                     <a href="#" class="social-link" aria-label="Facebook">
-                        <i data-lucide="facebook"></i>
+                        <img src="images/facebook.svg" alt="Facebook" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="Instagram">
-                        <i data-lucide="instagram"></i>
+                        <img src="images/instagram.svg" alt="Instagram" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="YouTube">
-                        <i data-lucide="youtube"></i>
+                        <img src="images/youtube.svg" alt="YouTube" class="icon">
                     </a>
                     <a href="#" class="social-link" aria-label="Discord">
-                        <i data-lucide="message-circle"></i>
+                        <img src="images/discord.svg" alt="Discord" class="icon">
                     </a>
                 </div>
             </div>
@@ -29,11 +26,11 @@
             <div class="footer-section">
                 <h4>Discover</h4>
                 <ul>
-                    <li><a href="new-releases.html">New Releases</a></li>
-                    <li><a href="bestsellers.html">Best Sellers</a></li>
+                    <li><a href="browse.html?sort=new">New Releases</a></li>
+                    <li><a href="browse.html?sort=best">Best Sellers</a></li>
+                    <li><a href="browse.html?sort=genre">Browse by Genre</a></li>
                     <li><a href="reviews.html">Book Reviews</a></li>
                     <li><a href="author-interviews.html">Author Interviews</a></li>
-                    <li><a href="genres.html">Browse by Genre</a></li>
                 </ul>
             </div>
 
@@ -66,7 +63,7 @@
                     <div class="newsletter-input-group">
                         <input type="email" placeholder="Enter your email" class="newsletter-input" required>
                         <button type="submit" class="newsletter-btn">
-                            <i data-lucide="send"></i>
+                            <img src="images/send.svg" alt="Subscribe" class="icon">
                         </button>
                     </div>
                     <p class="newsletter-disclaimer">We respect your privacy. Unsubscribe at any time.</p>
@@ -83,7 +80,7 @@
                     <a href="cookies.html">Cookie Policy</a>
                     <span>•</span>
                     <button id="themeToggle" class="theme-toggle">
-                        <i data-lucide="sun"></i>
+                        <img src="images/sun.svg" alt="Toggle Theme" class="icon">
                         <span>Light Mode</span>
                     </button>
                 </div>
@@ -91,105 +88,6 @@
         </div>
     </div>
 </footer>
-
-<style>
-    /* Additional Footer Styles */
-    .newsletter-form {
-        margin-top: 1rem;
-    }
-
-    .newsletter-input-group {
-        display: flex;
-        gap: 0.5rem;
-        margin-bottom: 0.5rem;
-    }
-
-    .newsletter-input {
-        flex: 1;
-        padding: 0.75rem;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        border-radius: 8px;
-        background: rgba(255, 255, 255, 0.1);
-        color: white;
-        font-size: 0.9rem;
-    }
-
-    .newsletter-input::placeholder {
-        color: rgba(255, 255, 255, 0.7);
-    }
-
-    .newsletter-btn {
-        padding: 0.75rem;
-        background: linear-gradient(45deg, #667eea, #764ba2);
-        border: none;
-        border-radius: 8px;
-        color: white;
-        cursor: pointer;
-        transition: all 0.3s ease;
-    }
-
-    .newsletter-btn:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .newsletter-disclaimer {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.6);
-        margin: 0;
-    }
-
-    .footer-bottom-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .footer-bottom-links {
-        display: flex;
-        align-items: center;
-        gap: 1rem;
-    }
-
-    .footer-bottom-links a {
-        color: #999;
-        text-decoration: none;
-        transition: color 0.3s ease;
-    }
-
-    .footer-bottom-links a:hover {
-        color: #667eea;
-    }
-
-    .theme-toggle {
-        background: none;
-        border: none;
-        color: #999;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
-        font-size: 0.9rem;
-        transition: color 0.3s ease;
-    }
-
-    .theme-toggle:hover {
-        color: #667eea;
-    }
-
-    @media (max-width: 768px) {
-        .footer-bottom-content {
-            flex-direction: column;
-            text-align: center;
-        }
-
-        .newsletter-input-group {
-            flex-direction: column;
-        }
-    }
-</style>
 
 <script>
     // Footer-specific functionality
@@ -214,31 +112,32 @@
         }
 
         // Theme toggle functionality
+        // Theme toggle functionality
         const themeToggle = document.getElementById('themeToggle');
         if (themeToggle) {
-            themeToggle.addEventListener('click', function() {
+            themeToggle.addEventListener('click', function () {
                 document.body.classList.toggle('dark-theme');
                 const isDark = document.body.classList.contains('dark-theme');
 
-                const icon = this.querySelector('i');
+                const icon = this.querySelector('img');
                 const text = this.querySelector('span');
 
                 if (isDark) {
-                    icon.setAttribute('data-lucide', 'moon');
+                    icon.src = 'images/moon.svg';
+                    icon.alt = 'Dark mode';
                     text.textContent = 'Dark Mode';
                 } else {
-                    icon.setAttribute('data-lucide', 'sun');
+                    icon.src = 'images/sun.svg';
+                    icon.alt = 'Light mode';
                     text.textContent = 'Light Mode';
                 }
 
-                lucide.createIcons();
-
-                // Show notification
                 if (typeof showNotification === 'function') {
                     showNotification(`Switched to ${isDark ? 'dark' : 'light'} mode`, 'info');
                 }
             });
         }
+
 
         // Social link tracking (for analytics)
         const socialLinks = document.querySelectorAll('.social-link');
@@ -257,8 +156,7 @@
         });
     }
 
-    // Call this function when the footer is loaded
-    if (typeof lucide !== 'undefined') {
-        document.addEventListener('DOMContentLoaded', initializeFooter);
-    }
+    document.addEventListener('DOMContentLoaded', initializeFooter);
+
+    initializeFooter()
 </script>
