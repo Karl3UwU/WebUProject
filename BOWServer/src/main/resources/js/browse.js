@@ -20,3 +20,12 @@ function updatePageTitles(sort) {
             subtitle.textContent = "Explore our collection";
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const params = new URLSearchParams(window.location.search);
+    const sort = params.get("sort") || "all";
+
+    updatePageTitles(sort);
+    loadBooksBy(sort); // Your function to fetch/render books by criteria
+});
+
