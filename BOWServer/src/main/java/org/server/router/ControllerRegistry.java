@@ -1,5 +1,6 @@
 package org.server.router;
 
+import org.server.controllers.AuthController;
 import org.server.controllers.TestController;
 
 import java.util.*;
@@ -9,6 +10,7 @@ public class ControllerRegistry {
 
     static {
         controllers.add(new TestController());
+        controllers.add(new AuthController());
     }
 
     public static List<Object> getControllers() {
