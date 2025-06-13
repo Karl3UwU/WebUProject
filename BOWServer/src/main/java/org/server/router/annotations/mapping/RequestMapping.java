@@ -1,4 +1,4 @@
-package org.server.router;
+package org.server.router.annotations.mapping;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

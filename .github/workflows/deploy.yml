@@ -1,0 +1,19 @@
+name: Deploy on PR Merge to Main
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main 
+
+jobs:
+  call-deploy-hook:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send POST request to deploy hook
+        env:
+          DEPLOY_HOOK_PASSWORD: ${{ secrets.DEPLOY_HOOK_PASSWORD }}
+        run: |
+          curl -X POST "http://booksofweb.xyz:4040/hook?password=$DEPLOY_HOOK_PASSWORD"
