@@ -1,6 +1,7 @@
 package org.server.session;
 
 import org.server.model.User;
+import org.server.util.JWTPayload;
 import org.server.util.JWTUtil;
 
 import java.util.Map;
@@ -10,7 +11,8 @@ public class SessionManager {
     private static final Map<String, User> sessions = new ConcurrentHashMap<>();
 
     public static String createSession(User user) {
-        String token = JWTUtil.createToken(user);
+        JWTPayload jwtPayload = new JWTPayload(user.getEmail());
+        String token = JWTUtil.createToken(jwtPayload);
         sessions.put(token, user);
         return token;
     }
