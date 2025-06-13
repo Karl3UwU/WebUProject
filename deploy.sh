@@ -36,5 +36,5 @@ fi
 
 # Start the server
 echo "Starting Java server..."
-( java -cp target/BOWServer-1.0-SNAPSHOT.jar org.server.Main & )
+( java -cp target/BOWServer-1.0-SNAPSHOT-jar-with-dependencies.jar org.server.Main & )
 echo "Java server started with PID $!"
