@@ -14,4 +14,4 @@ jobs:
     steps:
       - name: Send POST request to deploy hook
         run: |
-          curl -X POST "http://booksofweb.com:4040/hook?password=$DEPLOY_HOOK_PASSWORD"
+          curl -X POST "http://booksofweb.xyz:4040/hook?password=$DEPLOY_HOOK_PASSWORD"
