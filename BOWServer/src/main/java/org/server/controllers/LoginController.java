@@ -1,9 +1,9 @@
 package org.server.controllers;
 
 import com.google.gson.JsonObject;
-import org.server.router.PostMapping;
-import org.server.router.RequestMapping;
-import org.server.router.RequestParam;
+import org.server.router.annotations.mapping.PostMapping;
+import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.RequestParam;
 import org.server.util.JWTPayload;
 import org.server.util.JWTUtil;
 
@@ -14,15 +14,22 @@ public class LoginController {
     public String sendLoginRequest(@RequestParam("email") String email,
                                    @RequestParam("password") String password) {
         JsonObject response = new JsonObject();
-
-        if(!isValidUser(email, password)) {
-            response.addProperty("error", "Invalid email or password");
+        if (!isValidUser(email, password)) {
+            response.addProperty("success", false);
+            response.addProperty("message", "Invalid email or password");
+            response.add("data", null);
             return response.toString();
         }
 
         JWTPayload jwtPayload = new JWTPayload(email);
         String token = JWTUtil.createToken(jwtPayload);
-        response.addProperty("token", token);
+
+        JsonObject data = new JsonObject();
+        data.addProperty("token", token);
+
+        response.addProperty("success", true);
+        response.addProperty("message", "Login successful");
+        response.add("data", data);
 
         return response.toString();
     }

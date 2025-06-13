@@ -167,9 +167,20 @@ public class Router {
 
             } else if (param.isAnnotationPresent(RequestParam.class)) {
                 var annotation = param.getAnnotation(RequestParam.class);
-                String value = queryParams.get(annotation.value());
+                String value = null;
+
+                String contentType = exchange.getRequestHeaders().getFirst("Content-Type");
+                if (contentType != null && contentType.contains("application/x-www-form-urlencoded")) {
+                    Map<String, String> formParams = parseFormData(requestBody);
+                    value = formParams.get(annotation.value());
+                }
+
+                if (value == null) {
+                    value = queryParams.get(annotation.value());
+                }
+
                 if (annotation.required() && value == null) {
-                    throw new RuntimeException("Missing required query param: " + annotation.value());
+                    throw new RuntimeException("Missing required request param: " + annotation.value());
                 }
                 args[i] = value;
 
@@ -203,6 +214,25 @@ public class Router {
                 String[] parts = param.split("=");
                 if (parts.length == 2) {
                     result.put(parts[0], parts[1]);
+                }
+            }
+        }
+        return result;
+    }
+
+    private static Map<String, String> parseFormData(String body) {
+        Map<String, String> result = new HashMap<>();
+        if (body != null && !body.isEmpty()) {
+            for (String param : body.split("&")) {
+                String[] parts = param.split("=", 2);
+                if (parts.length == 2) {
+                    try {
+                        String key = java.net.URLDecoder.decode(parts[0], "UTF-8");
+                        String value = java.net.URLDecoder.decode(parts[1], "UTF-8");
+                        result.put(key, value);
+                    } catch (Exception e) {
+                        // Handle decoding error
+                    }
                 }
             }
         }

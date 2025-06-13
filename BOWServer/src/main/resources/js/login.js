@@ -31,28 +31,23 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch("/api/login/send", {
             method: "POST",
             headers: {
-                "Content-Type": "application/x-www-form-urlencoded",
+                "Content-Type": "application/x-www-form-urlencoded"
             },
-            body: new URLSearchParams({
-                email: email,
-                password: password
-            })
+            body: new URLSearchParams(loginData)
         })
             .then(response => response.json())
             .then(data => {
-                if (data.token) {
-                    localStorage.setItem("token", data.token);
+                if (data.success) {
+                    localStorage.setItem("token", data.data.token);
                     localStorage.setItem("loggedInUser", JSON.stringify({ email }));
-
                     window.location.href = "index.html";
                 } else {
-                    alert(data.error || "Login failed.");
+                    alert(data.message || "Login failed.");
                 }
             })
             .catch(error => {
                 console.error("Login error:", error);
                 alert("An error occurred. Please try again.");
             });
-
     });
 });
