@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
+import java.sql.Connection;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +18,7 @@ import org.server.router.annotations.request.QueryParam;
 import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
+import org.server.util.DBConnection;
 
 public class Router {
 
@@ -24,6 +26,14 @@ public class Router {
 
     public static void startServer() throws IOException {
         registerAllRoutes();
+
+        System.out.println("Testing db connection");
+        try (Connection conn = DBConnection.getConnection()) {
+            System.out.println("Connected to PostgreSQL!");
+            conn.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
         server.createContext("/", Router::handleRequest);
