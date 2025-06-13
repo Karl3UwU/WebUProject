@@ -11,7 +11,7 @@ public class JWTUtil {
     private static final String SECRET = "super-secret-key";
     private static final Gson gson = new Gson();
 
-    public static String createToken(Object payload) {
+    public static String createToken(JWTPayload payload) {
         String header = base64UrlEncode("{\"alg\":\"HS256\",\"typ\":\"JWT\"}");
         String body = base64UrlEncode(gson.toJson(payload));
         String signature = hmacSha256(header + "." + body);
@@ -27,8 +27,14 @@ public class JWTUtil {
         String signature = parts[2];
 
         String expectedSig = hmacSha256(header + "." + body);
-        return signature.equals(expectedSig);
+        if (!signature.equals(expectedSig)) return false;
+
+        // Check expiration
+        String json = new String(Base64.getUrlDecoder().decode(body), StandardCharsets.UTF_8);
+        JWTPayload payload = gson.fromJson(json, JWTPayload.class);
+        return payload.exp > System.currentTimeMillis();
     }
+
 
     public static <T> T parsePayload(String token, Class<T> clazz) {
         String[] parts = token.split("\\.");

@@ -28,12 +28,31 @@ document.addEventListener("DOMContentLoaded", () => {
         const loginData = { email, password };
         console.log("Logging in with:", loginData);
 
-        // Example: simulate successful login
-        // fetch("/api/login", {...})
+        fetch("/api/login/send", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body: new URLSearchParams({
+                email: email,
+                password: password
+            })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.token) {
+                    localStorage.setItem("token", data.token);
+                    localStorage.setItem("loggedInUser", JSON.stringify({ email }));
 
-        localStorage.setItem("loggedInUser", JSON.stringify({ email }));
+                    window.location.href = "index.html";
+                } else {
+                    alert(data.error || "Login failed.");
+                }
+            })
+            .catch(error => {
+                console.error("Login error:", error);
+                alert("An error occurred. Please try again.");
+            });
 
-        // Redirect to home if successful
-        window.location.href = "index.html";
     });
 });
