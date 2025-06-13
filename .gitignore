@@ -4,3 +4,5 @@
 target
 # the permissions script from the directory sql:
 /sql/permissions.sql
+deploy.log
+.env
