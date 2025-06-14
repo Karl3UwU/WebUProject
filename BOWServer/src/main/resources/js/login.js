@@ -28,17 +28,21 @@ document.addEventListener("DOMContentLoaded", () => {
         const loginData = { email, password };
         console.log("Logging in with:", loginData);
 
-        fetch("/api/login/send", {
+        fetch("/api/auth/login", {
             method: "POST",
             headers: {
                 "Content-Type": "application/x-www-form-urlencoded"
             },
             body: new URLSearchParams(loginData)
         })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) throw new Error("Failed to load books.");
+                return response.json();
+            })
             .then(data => {
-                if (data.success) {
-                    localStorage.setItem("token", data.data.token);
+                console.log("Login response:", data);
+                if (data) {
+                    localStorage.setItem("token", data.authToken);
                     localStorage.setItem("loggedInUser", JSON.stringify({ email }));
                     window.location.href = "index.html";
                 } else {

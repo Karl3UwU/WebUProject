@@ -12,6 +12,7 @@ import org.server.router.annotations.request.RequestParam;
 import org.server.service.AuthService;
 import org.server.util.DBConnection;
 import org.server.util.JWTUtil;
+import org.server.util.PasswordUtil;
 import org.server.util.ResponseEntity;
 
 import java.sql.Connection;
@@ -41,7 +42,7 @@ public class AuthController {
 
             String dbPassword = resultSet.next() ? resultSet.getString("password") : null;
 
-            if (dbPassword == null || !Objects.equals(dbPassword, password)) {
+            if (dbPassword == null || !Objects.equals(dbPassword, PasswordUtil.encryptPassword(password))) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                         .contentType("application/json")
                         .body(null);
