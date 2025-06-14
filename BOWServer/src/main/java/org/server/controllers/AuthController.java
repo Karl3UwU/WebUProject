@@ -1,12 +1,15 @@
 package org.server.controllers;
 
 import org.server.dto.LoginDTO;
+import org.server.dto.UserRegisterDTO;
 import org.server.enums.HttpStatus;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.request.QueryParam;
 import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestParam;
+import org.server.service.AuthService;
 import org.server.util.DBConnection;
 import org.server.util.JWTUtil;
 import org.server.util.ResponseEntity;
@@ -55,5 +58,14 @@ public class AuthController {
                     .contentType("application/json")
                     .body(null);
         }
+    }
+
+    @PostMapping("/register")
+    public ResponseEntity<Boolean> registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+        Boolean result = AuthService.registerUser(userRegisterDTO);
+
+        return ResponseEntity.status(result ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body(result);
     }
 }
