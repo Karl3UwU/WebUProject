@@ -4,13 +4,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const form = document.getElementById("registerForm");
 
-    form.addEventListener("submit", (e) => {
+    form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
         const username = document.getElementById("username").value.trim();
+        const firstName = document.getElementById("firstName").value.trim();
+        const lastName = document.getElementById("lastName").value.trim();
         const email = document.getElementById("email").value.trim();
         const password = document.getElementById("password").value;
         const confirmPassword = document.getElementById("confirmPassword").value;
+
 
         const errors = [];
 
@@ -25,12 +28,27 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const userData = { username, email, password };
-        console.log("Registered User:", userData);
+        try {
+            const userData = { username, firstName, lastName, email, password };
+            const response = await fetch('/api/auth/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(userData)
+            })
 
-        // Optional: Save to backend here
+            if(!response) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
 
-        // Redirect after success
+            const result = await response.json();
+            console.log('User registered successfully:', result);
+        } catch (error) {
+            console.error('Error registering user:', error);
+        }
+
+
         window.location.href = "index.html";
     });
 });
