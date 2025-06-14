@@ -1,5 +1,6 @@
 package org.server.controllers;
 
+import org.server.dto.BookDTO;
 import org.server.enums.genre;
 import org.server.model.Book;
 import org.server.router.annotations.mapping.GetMapping;
@@ -19,15 +20,15 @@ import java.sql.Array;
 public class BookController {
 
     @GetMapping("/all")
-    public ResponseEntity<List<Book>> getAllBooks() {
-        List<Book> books = new ArrayList<>();
+    public ResponseEntity<List<BookDTO>> getAllBooks() {
+        List<BookDTO> books = new ArrayList<>();
 
         try (Connection conn = DBConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement("SELECT * FROM books");
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
-                Book book = new Book();
+                BookDTO book = new BookDTO();
 
                 book.setTitle(rs.getString("title"));
                 book.setAuthor(rs.getString("author"));
