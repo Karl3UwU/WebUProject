@@ -86,26 +86,54 @@ public class Router {
         String key = method + ":" + path;
 
         Route route = routes.get(key);
-        String response;
+        String responseBody;
+        int statusCode = 200;
 
-        if (route != null) {
-            try {
-                Object[] args = resolveArguments(route.method, exchange);
-                Object result = route.method.invoke(route.controller, args);
-                response = result != null ? result.toString() : "";
-                exchange.sendResponseHeaders(200, response.getBytes().length);
-            } catch (Exception e) {
-                e.printStackTrace();
-                response = "500 Internal Server Error: " + e.getMessage();
-                exchange.sendResponseHeaders(500, response.getBytes().length);
+        if (route == null) {
+            responseBody = "Not Found";
+            statusCode = 404;
+            exchange.sendResponseHeaders(statusCode, responseBody.getBytes().length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(responseBody.getBytes());
             }
-        } else {
-            response = "404 Not Found";
-            exchange.sendResponseHeaders(404, response.getBytes().length);
+        }
+        try {
+            Object[] args = resolveArguments(route.method, exchange);
+            Object result = route.method.invoke(route.controller, args);
+
+            if (result instanceof org.server.util.ResponseEntity) {
+                org.server.util.ResponseEntity<?> responseEntity = (org.server.util.ResponseEntity<?>) result;
+
+                statusCode = responseEntity.getStatusCodeValue();
+                setResponseHeaders(exchange, responseEntity.getHeaders());
+                responseBody = responseEntity.toJson();
+
+                if (responseBody == null) {
+                    responseBody = "";
+                }
+            } else {
+                responseBody = result != null ? result.toString() : "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            responseBody = "Internal Server Error: " + e.getMessage();
+            statusCode = 500;
         }
 
+        exchange.sendResponseHeaders(statusCode, responseBody.getBytes().length);
         try (OutputStream os = exchange.getResponseBody()) {
-            os.write(response.getBytes());
+            os.write(responseBody.getBytes());
+        }
+    }
+
+    private static void setResponseHeaders(HttpExchange exchange, org.server.util.HttpHeaders headers) {
+        if (headers != null) {
+            for (String headerName : headers.keySet()) {
+                String headerValue = headers.getFirst(headerName);
+                if (headerValue != null) {
+                    exchange.getResponseHeaders().set(headerName, headerValue);
+                }
+            }
         }
     }
 
