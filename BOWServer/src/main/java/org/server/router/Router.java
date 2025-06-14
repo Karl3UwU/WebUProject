@@ -27,14 +27,6 @@ public class Router {
     public static void startServer() throws IOException {
         registerAllRoutes();
 
-        System.out.println("Testing db connection");
-        try (Connection conn = DBConnection.getConnection()) {
-            System.out.println("Connected to PostgreSQL!");
-            conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
         server.createContext("/", Router::handleRequest);
         server.setExecutor(null);
