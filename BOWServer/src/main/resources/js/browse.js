@@ -1,3 +1,7 @@
+let currentPage = 0;
+const booksPerPage = 6;
+let currentBooks = [];
+
 function updatePageTitles(sort) {
     const title = document.getElementById("browseTitle");
     const subtitle = document.getElementById("browseSubtitle");
@@ -44,27 +48,35 @@ function loadBooksBy(sort) {
             return response.json();
         })
         .then(books => {
-            renderBooks(books);
+            currentBooks= books;
+            curerntPage = 0;
+            renderNextPage();
         })
         .catch(error => {
             console.error("Error loading books:", error);
         });
 }
 
+function renderNextPage() {
+    const start = currentPage * booksPerPage;
+    const end = start + booksPerPage;
+    const booksToRender = currentBooks.slice(start, end);
 
-function renderBooks(books) {
-    console.log("Rendering books:", books); // ✅ Add this
     const grid = document.getElementById("browseGrid");
-    grid.innerHTML = ""; // Clear previous books
 
-    if (!books || books.length === 0) {
+    // On first page reset, otherwise keep appending
+    if (currentPage === 0) {
+        grid.innerHTML = "";
+    }
+
+    if (booksToRender.length === 0 && currentPage === 0) {
         grid.innerHTML = "<p>No books found.</p>";
         return;
     }
 
-    books.forEach(book => {
+    booksToRender.forEach(book => {
         const card = document.createElement("div");
-        card.className = "book-card"; // Ensure this class exists in your CSS
+        card.className = "book-card";
 
         const genreDisplay = book.genres
             .map(g => g.replace(/_/g, " ").toLowerCase())
@@ -83,11 +95,25 @@ function renderBooks(books) {
 
         grid.appendChild(card);
     });
+
+    currentPage++;
+
+    // Hide "Load More" if all books are rendered
+    const loadMoreBtn = document.getElementById("loadMoreBtn");
+    if (currentPage * booksPerPage >= currentBooks.length) {
+        loadMoreBtn.style.display = "none";
+    } else {
+        loadMoreBtn.style.display = "inline-flex";
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const sort = params.get("sort") || "all";
+
+    document.getElementById("loadMoreBtn").addEventListener("click", () => {
+        renderNextPage();
+    });
 
     updatePageTitles(sort);
     loadBooksBy(sort);
