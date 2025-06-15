@@ -15,4 +15,6 @@ public enum genre {
     SELF_HELP,
     SCIENCE,
     TRAVEL,
+    CYBERPUNK,
+
 }

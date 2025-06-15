@@ -24,8 +24,49 @@
                 <p id="browseSubtitle">Explore our collection</p>
             </div>
 
-            <div class="books-grid" id="browseGrid">
-                <!-- Books will be dynamically inserted here -->
+            <div class="browse-layout">
+                <!-- Filter Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label for="genre">Genre</label>
+                        <select id="genre">
+                            <option value="">All</option>
+                            <option>Fiction</option>
+                            <option>Non-fiction</option>
+                            <option>Fantasy</option>
+                            <option>Science</option>
+                            <option>History</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label for="author">Author</label>
+                        <input type="text" id="author" placeholder="Search by author">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="language">Language</label>
+                        <input type="text" id="language" placeholder="Language code">
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="rating">Minimum Rating</label>
+                        <select id="rating">
+                            <option value="">Any</option>
+                            <option>1+</option>
+                            <option>2+</option>
+                            <option>3+</option>
+                            <option>4+</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                    <button class="btn btn-primary">Apply Filters</button>
+                </aside>
+
+                <!-- Books Grid -->
+                <div class="books-grid" id="browseGrid">
+                    <!-- Books dynamically inserted here -->
+                </div>
             </div>
 
             <div class="load-more-container">
@@ -36,6 +77,7 @@
             </div>
         </div>
     </section>
+
 </main>
 
 
