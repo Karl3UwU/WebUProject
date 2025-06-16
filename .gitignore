@@ -6,3 +6,5 @@ target
 /sql/permissions.sql
 deploy.log
 .env
+*.p12
+*.jks

@@ -1,16 +1,18 @@
 package org.server.router;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.lang.reflect.Method;
 import java.net.InetSocketAddress;
-import java.sql.Connection;
+import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpServer;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsServer;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
@@ -18,20 +20,74 @@ import org.server.router.annotations.request.QueryParam;
 import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
-import org.server.util.DBConnection;
+
+import io.github.cdimascio.dotenv.Dotenv;
+
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
 
 public class Router {
+
+    private static final Dotenv dotenv = Dotenv.load();
 
     private static final Map<String, Route> routes = new HashMap<>();
 
     public static void startServer() throws IOException {
-        registerAllRoutes();
+        try {
+            registerAllRoutes();
 
-        HttpServer server = HttpServer.create(new InetSocketAddress(80), 0);
-        server.createContext("/", Router::handleRequest);
-        server.setExecutor(null);
-        server.start();
-        System.out.println("Server started on http://localhost:80");
+            boolean isProduction = "true".equalsIgnoreCase(dotenv.get("IS_PROD"));
+            startHttpsServer(isProduction);
+        } catch (Exception e) {
+            System.err.println("Failed to start server: " + e.getMessage());
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+    private static void startHttpsServer(boolean isProduction) throws Exception {
+        // Determine keystore file and password
+        String keystoreFile = isProduction ? "keystore-prod.jks" : "keystore-dev.jks";
+        String keystorePassword = dotenv.get("KEYSTORE_PASSWORD");
+
+        // Load keystore
+        KeyStore keyStore = KeyStore.getInstance("JKS");
+        try (InputStream keystoreInput = new FileInputStream(keystoreFile)) {
+            keyStore.load(keystoreInput, keystorePassword.toCharArray());
+        }
+
+        // Initialize KeyManagerFactory
+        KeyManagerFactory keyManagerFactory = KeyManagerFactory.getInstance(
+                KeyManagerFactory.getDefaultAlgorithm());
+        keyManagerFactory.init(keyStore, keystorePassword.toCharArray());
+
+        // Initialize TrustManagerFactory
+        TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
+                TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init(keyStore);
+
+        // Create SSL context
+        SSLContext sslContext = SSLContext.getInstance("TLS");
+        sslContext.init(
+                keyManagerFactory.getKeyManagers(),
+                trustManagerFactory.getTrustManagers(),
+                null
+        );
+
+        // Create HTTPS server
+        int port = 443;
+        HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), 0);
+        httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext));
+        httpsServer.createContext("/", Router::handleRequest);
+        httpsServer.setExecutor(null);
+        httpsServer.start();
+
+        String environment = isProduction ? "PRODUCTION" : "DEVELOPMENT";
+        System.out.println(String.format(
+                "HTTPS Server started in %s mode on https://localhost:%d using keystore: %s",
+                environment, port, keystoreFile
+        ));
     }
 
     public static void registerAllRoutes() {
