@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Books of Web - Book Reviews</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="stylesheet" href="css/footer.css" />
+    <link rel="stylesheet" href="css/header.css" />
+    <link rel="stylesheet" href="css/reviews.css" />
+    <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
+</head>
+<body>
+
+<div id="header"></div>
+
+<main>
+    <section class="browse-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 id="reviewsTitle">Book Reviews</h1>
+                <p id="reviewsSubtitle">Read what others are saying</p>
+            </div>
+
+            <div class="browse-layout">
+                <!-- Filter Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3>Filter Reviews</h3>
+
+                    <div class="filter-group">
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" id="bookTitle" placeholder="Search by book name" />
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="reviewerName">Reviewer</label>
+                        <input type="text" id="reviewerName" placeholder="Search by reviewer name" />
+                    </div>
+
+                    <button class="btn btn-primary" id="applyReviewFilters">Apply Filters</button>
+                </aside>
+
+                <!-- Main review content -->
+                <div class="reviews-main">
+                    <div class="reviews-list" id="reviewsList"></div>
+                    <div class="load-more-container">
+                        <button class="btn btn-secondary" id="loadMoreReviewsBtn">
+                            <img src="images/loader.svg" alt="Load More" class="icon">
+                            Load More Reviews
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+
+<div id="footer"></div>
+
+<script src="js/script.js"></script>
+<script src="js/loader.js"></script>
+<script src="js/header.js"></script>
+<script src="js/reviews.js"></script>
+
+</body>
+</html>

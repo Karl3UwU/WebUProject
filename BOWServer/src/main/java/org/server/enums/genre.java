@@ -16,5 +16,12 @@ public enum genre {
     SCIENCE,
     TRAVEL,
     CYBERPUNK,
+    CLASSIC,
+    MEMOIR,
+    DRAMA,
+    HUMOR,
+    FICTION,
+    PHILOSOPHY,
+
 
 }

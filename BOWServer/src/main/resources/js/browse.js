@@ -7,6 +7,10 @@ function updatePageTitles(sort) {
     const subtitle = document.getElementById("browseSubtitle");
 
     switch (sort) {
+        case "language":
+            title.textContent = "Browse by Language";
+            subtitle.textContent = "Explore books in different languages";
+            break;
         case "new":
             title.textContent = "New Releases";
             subtitle.textContent = "Check out the latest additions to our library";
@@ -25,37 +29,41 @@ function updatePageTitles(sort) {
     }
 }
 
-function loadBooksBy(sort) {
-    let url;
+function loadFilteredBooks() {
+    const title = document.getElementById("filterTitle").value.trim();
+    const author = document.getElementById("filterAuthor").value.trim();
+    const language = document.getElementById("filterLanguage").value.trim();
+    const minRatingStr = document.getElementById("filterMinRating").value.trim();
 
-    switch (sort) {
-        case "new":
-            url = "/api/books?sort=new"; // Placeholder: update when backend supports this
-            break;
-        case "best":
-            url = "/api/books?sort=best"; // Placeholder
-            break;
-        case "genre":
-            url = "/api/books?sort=genre"; // Placeholder or could trigger local genre filter
-            break;
-        default:
-            url = "/api/books/all"; // Load all books
+    const params = new URLSearchParams();
+
+    if (title) params.append("title", title);
+    if (author) params.append("author", author);
+    if (language) params.append("language", language);
+    if (minRatingStr) {
+        const minRating = parseFloat(minRatingStr);
+        if (!isNaN(minRating)) {
+            params.append("minRating", minRating);
+        }
     }
-    console.log("balls", url); // ✅ Add this
+
+    const url = "/api/books/filter?" + params.toString();
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error("Failed to load books.");
             return response.json();
         })
         .then(books => {
-            currentBooks= books;
-            curerntPage = 0;
+            currentBooks = books;
+            currentPage = 0;
+            window.scrollTo({ top: 0, behavior: "smooth" });
             renderNextPage();
         })
         .catch(error => {
             console.error("Error loading books:", error);
         });
 }
+
 
 function renderNextPage() {
     const start = currentPage * booksPerPage;
@@ -115,8 +123,13 @@ document.addEventListener("DOMContentLoaded", () => {
         renderNextPage();
     });
 
+    document.getElementById("applyFiltersBtn").addEventListener("click", () => {
+        loadFilteredBooks();
+    });
+
+
     updatePageTitles(sort);
-    loadBooksBy(sort);
+    loadFilteredBooks(sort);
 });
 
 
