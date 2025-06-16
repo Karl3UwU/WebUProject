@@ -72,7 +72,6 @@ function renderNextPage() {
 
     const grid = document.getElementById("browseGrid");
 
-    // On first page reset, otherwise keep appending
     if (currentPage === 0) {
         grid.innerHTML = "";
     }
@@ -100,6 +99,9 @@ function renderNextPage() {
                 <p class="book-pages"><strong>Pages:</strong> ${book.page_count}</p>
             </div>
         `;
+        card.addEventListener("click", () => {
+            window.location.href = `book.html?title=${encodeURIComponent(book.title)}`;
+        });
 
         grid.appendChild(card);
     });
