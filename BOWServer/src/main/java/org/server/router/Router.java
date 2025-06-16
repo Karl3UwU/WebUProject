@@ -10,9 +10,10 @@ import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.sun.net.httpserver.HttpExchange;
-import com.sun.net.httpserver.HttpsConfigurator;
-import com.sun.net.httpserver.HttpsServer;
+import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManagerFactory;
+
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
@@ -21,11 +22,11 @@ import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
 
-import io.github.cdimascio.dotenv.Dotenv;
+import com.sun.net.httpserver.HttpExchange;
+import com.sun.net.httpserver.HttpsConfigurator;
+import com.sun.net.httpserver.HttpsServer;
 
-import javax.net.ssl.KeyManagerFactory;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManagerFactory;
+import io.github.cdimascio.dotenv.Dotenv;
 
 public class Router {
 
@@ -64,8 +65,8 @@ public class Router {
 
         // Initialize TrustManagerFactory
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-                TrustManagerFactory.getDefaultAlgorithm());
-        trustManagerFactory.init(keyStore);
+            TrustManagerFactory.getDefaultAlgorithm());
+        trustManagerFactory.init((KeyStore) null);
 
         // Create SSL context
         SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -79,8 +80,8 @@ public class Router {
         int port = 443;
         HttpsServer httpsServer = HttpsServer.create(new InetSocketAddress(port), 0);
         httpsServer.setHttpsConfigurator(new HttpsConfigurator(sslContext));
+        httpsServer.setExecutor(java.util.concurrent.Executors.newFixedThreadPool(10));
         httpsServer.createContext("/", Router::handleRequest);
-        httpsServer.setExecutor(null);
         httpsServer.start();
 
         String environment = isProduction ? "PRODUCTION" : "DEVELOPMENT";
@@ -217,6 +218,8 @@ public class Router {
 
         byte[] content = inputStream.readAllBytes();
         exchange.sendResponseHeaders(200, content.length);
+        exchange.getResponseHeaders().set("Connection", "keep-alive");
+        exchange.getResponseHeaders().set("Keep-Alive", "timeout=5, max=100");
         try (OutputStream os = exchange.getResponseBody()) {
             os.write(content);
         }
