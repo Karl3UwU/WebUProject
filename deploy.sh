@@ -12,7 +12,7 @@ if [[ "$OSTYPE" == "msys" || "$OSTYPE" == "win32" ]]; then
   taskkill -F -IM java.exe
 else
   # Linux/Unix: kill all java processes on port 80
-  sudo fuser -k 80/tcp
+  pkill -f java
 fi
 
 # Pull latest changes
