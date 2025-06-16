@@ -29,38 +29,24 @@
                 <aside class="filters-sidebar">
                     <h3>Filters</h3>
                     <div class="filter-group">
-                        <label for="genre">Genre</label>
-                        <select id="genre">
-                            <option value="">All</option>
-                            <option>Fiction</option>
-                            <option>Non-fiction</option>
-                            <option>Fantasy</option>
-                            <option>Science</option>
-                            <option>History</option>
-                        </select>
+                        <label for="filterTitle">Book Title</label>
+                        <input type="text" id="filterTitle" placeholder="Search by book title" />
                     </div>
                     <div class="filter-group">
-                        <label for="author">Author</label>
-                        <input type="text" id="author" placeholder="Search by author">
+                        <label for="filterAuthor">Author</label>
+                        <input type="text" id="filterAuthor" placeholder="Search by author name" />
                     </div>
+                    <div class="filter-group">
+                        <label for="filterLanguage">Language</label>
+                        <input type="text" id="filterLanguage" placeholder="Search by language code" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterMinRating">Minimum Rating</label>
+                        <input type="number" step="1" min="0" max="10" id="filterMinRating" placeholder="Enter minimum rating" />
+                    </div>
+                    <button id="applyFiltersBtn" class="btn btn-primary">Apply Filters</button>
 
-                    <div class="filter-group">
-                        <label for="language">Language</label>
-                        <input type="text" id="language" placeholder="Language code">
-                    </div>
 
-                    <div class="filter-group">
-                        <label for="rating">Minimum Rating</label>
-                        <select id="rating">
-                            <option value="">Any</option>
-                            <option>1+</option>
-                            <option>2+</option>
-                            <option>3+</option>
-                            <option>4+</option>
-                            <option>5</option>
-                        </select>
-                    </div>
-                    <button class="btn btn-primary">Apply Filters</button>
                 </aside>
 
                 <!-- Books Grid -->
