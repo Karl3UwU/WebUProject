@@ -2,6 +2,24 @@ let currentPage = 0;
 const booksPerPage = 6;
 let currentBooks = [];
 
+window.addEventListener("DOMContentLoaded", () => {
+    const storedGenre = sessionStorage.getItem("selectedGenre");
+    if (storedGenre) {
+        const genreInput = document.getElementById("filterGenre"); // ✅ Corrected ID
+        const applyBtn = document.getElementById("applyFiltersBtn"); // ✅ Also matches your button
+
+        if (genreInput) {
+            genreInput.value = storedGenre;
+            sessionStorage.removeItem("selectedGenre");
+
+            setTimeout(() => {
+                applyBtn?.click(); // ✅ Simulate the user clicking Apply Filters
+            }, 150);
+        }
+    }
+});
+
+
 function updatePageTitles(sort) {
     const title = document.getElementById("browseTitle");
     const subtitle = document.getElementById("browseSubtitle");
@@ -32,6 +50,7 @@ function updatePageTitles(sort) {
 function loadFilteredBooks() {
     const title = document.getElementById("filterTitle").value.trim();
     const author = document.getElementById("filterAuthor").value.trim();
+    const genre = document.getElementById("filterGenre").value.trim();
     const language = document.getElementById("filterLanguage").value.trim();
     const minRatingStr = document.getElementById("filterMinRating").value.trim();
 
@@ -39,6 +58,7 @@ function loadFilteredBooks() {
 
     if (title) params.append("title", title);
     if (author) params.append("author", author);
+    if (genre) params.append("genre", genre);
     if (language) params.append("language", language);
     if (minRatingStr) {
         const minRating = parseFloat(minRatingStr);
