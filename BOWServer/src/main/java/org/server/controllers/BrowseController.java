@@ -32,6 +32,7 @@ public class BrowseController {
     public ResponseEntity<List<BookDTO>> filterBooks(
             @RequestParam(value = "title", required = false) String title,
             @RequestParam(value = "author", required = false) String author,
+            @RequestParam(value = "genre", required = false) String genre,
             @RequestParam(value = "language", required = false) String language,
             @RequestParam(value = "minRating", required = false) String minRatingStr) {
 
@@ -43,7 +44,7 @@ public class BrowseController {
                 System.out.println("Invalid minRating format: " + minRatingStr);
             }
         }
-        BookFilterDTO filter = new BookFilterDTO(title, author, language, minRating);
+        BookFilterDTO filter = new BookFilterDTO(title, author, genre, language, minRating);
         try {
             List<BookDTO> books = BrowseService.getFilteredBooks(filter);
             return ResponseEntity.ok().contentType("application/json").body(books);

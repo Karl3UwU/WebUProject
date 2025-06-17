@@ -3,14 +3,16 @@ package org.server.dto;
 public class BookFilterDTO {
     private String title;
     private String author;
+    private String genre;
     private String language;
     private Double minRating;
 
     public BookFilterDTO() {}
 
-    public BookFilterDTO(String title, String author, String language, Double minRating) {
+    public BookFilterDTO(String title, String author, String genre, String language, Double minRating) {
         this.title = title;
         this.author = author;
+        this.genre = genre;
         this.language = language;
         this.minRating = minRating;
     }
@@ -21,6 +23,9 @@ public class BookFilterDTO {
 
     public String getAuthor() { return author; }
     public void setAuthor(String author) { this.author = author; }
+
+    public String getGenre() { return genre; }
+    public void setGenre(String genre) { this.genre = genre; }
 
     public String getLanguage() { return language; }
     public void setLanguage(String language) { this.language = language; }

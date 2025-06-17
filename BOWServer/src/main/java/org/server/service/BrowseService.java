@@ -58,6 +58,8 @@ public class BrowseService {
         return books.stream()
                 .filter(book -> filter.getTitle() == null || book.getTitle().toLowerCase().contains(filter.getTitle().toLowerCase()))
                 .filter(book -> filter.getAuthor() == null || book.getAuthor().toLowerCase().contains(filter.getAuthor().toLowerCase()))
+                .filter(book -> filter.getGenre() == null || book.getGenres() != null &&
+                        java.util.Arrays.stream(book.getGenres()).anyMatch(g -> g.name().equalsIgnoreCase(filter.getGenre())))
                 .filter(book -> filter.getLanguage() == null || book.getLanguage().equalsIgnoreCase(filter.getLanguage()))
                 .filter(book -> filter.getMinRating() == null || book.getRating() >= filter.getMinRating())
                 .toList();
