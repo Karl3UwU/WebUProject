@@ -1,4 +1,4 @@
-package org.server.util;
+package org.server.session;
 
 public class JWTPayload {
     public String sub;

@@ -1,16 +1,21 @@
 package org.server.service;
 
+import org.server.dto.LoginDTO;
 import org.server.dto.UserInfoDTO;
 import org.server.dto.UserRegisterDTO;
+import org.server.enums.HttpStatus;
 import org.server.enums.UserRole;
 import org.server.model.User;
+import org.server.session.JWTUtil;
 import org.server.util.DBConnection;
 import org.server.util.PasswordUtil;
+import org.server.util.ResponseEntity;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Objects;
 
 public class AuthService {
 
@@ -24,7 +29,7 @@ public class AuthService {
             statement.setString(3, registerDTO.getFirstName());
             statement.setString(4, registerDTO.getLastName());
             statement.setString(5, registerDTO.getEmail());
-            statement.setString(6, PasswordUtil.encryptPassword(registerDTO.getPassword()));
+            statement.setString(6, PasswordUtil.encryptPassword(UserRegisterDTOToPassword(registerDTO)));
 
             int rowsAffected = statement.executeUpdate(); // Use executeUpdate() for INSERT
             return rowsAffected > 0;
@@ -32,6 +37,10 @@ public class AuthService {
             e.printStackTrace();
             return false;
         }
+    }
+
+    private static String UserRegisterDTOToPassword (UserRegisterDTO registerDTO) {
+        return registerDTO.getEmail() + registerDTO.getPassword();
     }
 
     private UserInfoDTO userModelToDTO(User user) {

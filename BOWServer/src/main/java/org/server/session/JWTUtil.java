@@ -1,4 +1,4 @@
-package org.server.util;
+package org.server.session;
 
 import com.google.gson.Gson;
 

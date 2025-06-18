@@ -1,23 +1,21 @@
 package org.server.session;
 
 import org.server.model.User;
-import org.server.util.JWTPayload;
-import org.server.util.JWTUtil;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class SessionManager {
-    private static final Map<String, User> sessions = new ConcurrentHashMap<>();
+    private static final Map<String, String> sessions = new ConcurrentHashMap<>();
 
-    public static String createSession(User user) {
-        JWTPayload jwtPayload = new JWTPayload(user.getEmail());
+    public static String createSession(String userEmail) {
+        JWTPayload jwtPayload = new JWTPayload(userEmail);
         String token = JWTUtil.createToken(jwtPayload);
-        sessions.put(token, user);
+        sessions.put(token, userEmail);
         return token;
     }
 
-    public static User getUserFromToken(String token) {
+    public static String getUserEmailFromToken(String token) {
         if (!JWTUtil.verifyToken(token)) return null;
         return sessions.get(token);
     }
