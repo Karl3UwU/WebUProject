@@ -61,7 +61,7 @@ public class BrowseController {
             @RequestParam(value = "title") String title,
             @RequestParam(value = "author") String author,
             @RequestParam(value = "language", required = false) String language,
-            @RequestParam(value = "page_count", required = false) Integer pageCount,
+            @RequestParam(value = "page_count", required = false) String pageCount,
             @RequestParam(value = "genres", required = false) String[] genresStr
     ) {
         try {
@@ -91,7 +91,7 @@ public class BrowseController {
             book.setTitle(title.trim());
             book.setAuthor(author.trim());
             book.setLanguage(language != null ? language.trim() : null);
-            book.setPage_count(pageCount);
+            book.setPage_count(pageCount != null ? Integer.parseInt(pageCount) : null);
             book.setGenres(genres);
 
             boolean success = org.server.service.BrowseService.submitSuggestion(book);
