@@ -1,13 +1,18 @@
 package org.server.controllers;
 
+import com.google.gson.Gson;
 import org.server.dto.LoginDTO;
+import org.server.dto.UserInfoDTO;
 import org.server.dto.UserRegisterDTO;
 import org.server.enums.HttpStatus;
+import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
 import org.server.router.annotations.request.RequestBody;
+import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
 import org.server.service.AuthService;
+import org.server.session.SessionManager;
 import org.server.util.DBConnection;
 import org.server.session.JWTUtil;
 import org.server.util.PasswordUtil;
@@ -67,4 +72,29 @@ public class AuthController {
                 .contentType("application/json")
                 .body(result);
     }
+
+//    @GetMapping("/getUser")
+//    public ResponseEntity<String> getUser(@RequestHeader("Authorization") String authToken) {
+//        if (authToken == null || authToken.trim().isEmpty()) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                    .contentType("application/json")
+//                    .body(null);
+//        }
+//
+//        if (authToken.startsWith("Bearer ")) {
+//            authToken = authToken.substring(7); // Remove "Bearer "
+//        }
+//
+//        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+//        if( userEmail == null) {
+//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+//                    .contentType("application/json")
+//                    .body(null);
+//        }
+//
+//        return ResponseEntity.ok()
+//                .contentType("application/json")
+//                .body(new Gson().toJson(new UserInfoDTO(userEmail)));
+//
+//    }
 }

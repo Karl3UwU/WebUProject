@@ -16,4 +16,8 @@ public class UserInfoDTO {
         this.email = email;
         this.role = role;
     }
+
+    public UserInfoDTO(String email) {
+        this.email = email;
+    }
 }
