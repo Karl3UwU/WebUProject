@@ -1,7 +1,18 @@
+let lastTitle = "";
+let lastAuthor = "";
+
 document.addEventListener("DOMContentLoaded", () => {
     const shuffleBtn = document.getElementById("shuffleBtn");
     const bookResult = document.getElementById("bookResult");
     const addToSiteDiv = document.getElementById("addToSite");
+    const addToSiteBtn = document.getElementById("addToSiteBtn");
+    addToSiteBtn.addEventListener("click", () => {
+        const url = new URL("/submissions.html", window.location.origin);
+        url.searchParams.append("title", lastTitle);
+        url.searchParams.append("author", lastAuthor);
+        window.location.href = url.toString();
+    });
+
     addToSiteDiv.style.display = "none";
 
     shuffleBtn.addEventListener("click", async () => {
@@ -29,6 +40,9 @@ document.addEventListener("DOMContentLoaded", () => {
             const randomBook = data.works[Math.floor(Math.random() * data.works.length)];
             const title = randomBook.title;
             const author = randomBook.authors?.[0]?.name || "Unknown";
+            lastTitle = title;
+            lastAuthor = author;
+
             const coverId = randomBook.cover_id;
             const link = `https://openlibrary.org${randomBook.key}`;
 
@@ -42,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (typeof workData.description === "object" && workData.description.value) {
                 description = workData.description.value;
             }
+
 
             const coverImg = coverId
                 ? `https://covers.openlibrary.org/b/id/${coverId}-L.jpg`

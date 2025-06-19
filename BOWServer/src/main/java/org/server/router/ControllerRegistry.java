@@ -2,6 +2,7 @@ package org.server.router;
 
 import org.server.controllers.AuthController;
 import org.server.controllers.BrowseController;
+import org.server.controllers.NewsController;
 import org.server.controllers.ReviewsController;
 
 import java.util.*;
@@ -13,6 +14,7 @@ public class ControllerRegistry {
         controllers.add(new AuthController());
         controllers.add(new BrowseController());
         controllers.add(new ReviewsController());
+        controllers.add(new NewsController());
     }
 
     public static List<Object> getControllers() {

@@ -83,3 +83,6 @@
 .add-to-site {
     display: none;
 }
+.add-to-site p{
+    margin-bottom: 1rem;
+}

@@ -1,4 +1,27 @@
 document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("addToProfileBtn").addEventListener("click", () => {
+        if (isUserLoggedIn()) {
+            // TODO: Add to bookshelf logic
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    document.getElementById("addToGroupBtn").addEventListener("click", () => {
+        if (isUserLoggedIn()) {
+            // TODO: Add to reading group logic
+        } else {
+            window.location.href = "login.html";
+        }
+    });
+
+    document.getElementById("writeReviewBtn").addEventListener("click", () => {
+        if (isUserLoggedIn()) {
+            // TODO: Write review logic
+        } else {
+            window.location.href = "login.html";
+        }
+    });
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
 
@@ -78,3 +101,11 @@ function getStarRating(rating) {
     if (!rating) return "";
     return "★".repeat(Math.round(rating)) + "☆".repeat(10 - Math.round(rating));
 }
+
+function isUserLoggedIn() {
+    // TODO: Replace this logic with your actual auth check
+    // Example: return Boolean(sessionStorage.getItem("userToken"));
+    // Or call /api/auth/status and cache the result
+    return false; // Simulating a not-logged-in user
+}
+

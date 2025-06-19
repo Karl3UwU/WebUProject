@@ -9,7 +9,11 @@ import java.util.Objects;
 public class ResponseEntity<T> extends HttpEntity<T> {
     private static final Gson DEFAULT_GSON = new GsonBuilder()
             .setPrettyPrinting()
+            .registerTypeAdapter(java.time.LocalDateTime.class,
+                    (com.google.gson.JsonSerializer<java.time.LocalDateTime>) (src, typeOfSrc, context) ->
+                            new com.google.gson.JsonPrimitive(src.toString()))
             .create();
+
 
     private final HttpStatus status;
 
