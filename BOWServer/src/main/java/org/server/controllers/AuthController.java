@@ -76,8 +76,8 @@ public class AuthController {
 
     @PostMapping("/confirm-user")
     public ResponseEntity<String> confirmUser(
-            @QueryParam("sessionId") String sessionId,
-            @QueryParam("verificationCode") String verificationCode
+            @RequestParam("sessionId") String sessionId,
+            @RequestParam("verificationCode") String verificationCode
     ) {
         String result = AuthService.verifyEmail(sessionId, verificationCode);
 

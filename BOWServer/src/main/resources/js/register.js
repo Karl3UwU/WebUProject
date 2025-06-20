@@ -46,11 +46,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
             const result = await response.text();
             console.log('User registered successfully:', result);
+            loadHTML('/components/register-modal.html', '#register-modal')
         } catch (error) {
             console.error('Error registering user:', error);
         }
-
-
-//        window.location.href = "index.html";
+        // window.location.href = "index.html";
     });
+
+    document.getElementById('test-modal').addEventListener('click', async () => {
+        loadHTML('/components/register-modal.html', '#register-modal')
+    })
 });

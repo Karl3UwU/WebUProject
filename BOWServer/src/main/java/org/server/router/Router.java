@@ -65,7 +65,7 @@ public class Router {
 
         // Initialize TrustManagerFactory
         TrustManagerFactory trustManagerFactory = TrustManagerFactory.getInstance(
-            TrustManagerFactory.getDefaultAlgorithm());
+                TrustManagerFactory.getDefaultAlgorithm());
         trustManagerFactory.init((KeyStore) null);
 
         // Create SSL context
@@ -197,13 +197,22 @@ public class Router {
     private static void handleHTMLRequest(HttpExchange exchange) throws IOException {
         String path = exchange.getRequestURI().getPath();
 
-        // Serve / as /index.html
-        if (path.equals("/")) {
+        if (path.equals("/sitemap.xml")) {
+            path = "/sitemap/sitemap.xml";
+        } else if (path.equals("/robots.txt")) {
+            path = "/sitemap/robots.txt";
+        } else if (!path.startsWith("/resource")) {
+            // Go to index by default if not internal resource request
             path = "/index.html";
+        } else {
+            path = path.substring("/resource".length());
+            if (path.isEmpty()) {
+                path = "/index.html"; // fallback
+            }
         }
 
         String resourcePath = path.startsWith("/") ? path.substring(1) : path;
-        InputStream inputStream = Router.class.getClassLoader().getResourceAsStream(resourcePath);
+        InputStream inputStream = Router.class.getClassLoader().getResourceAsStream("_public/" + resourcePath);
         if (inputStream == null) {
             String response = "404 Not Found: " + path;
             exchange.sendResponseHeaders(404, response.getBytes().length);

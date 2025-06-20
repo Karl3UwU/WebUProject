@@ -1,0 +1,114 @@
+<div id="register-modal" class="modal-overlay hidden">
+    <div class="modal-container">
+        <div class="modal-header">
+            <h2>Email Verification</h2>
+            <button type="button" id="close-button" class="close-btn" aria-label="Close modal">&times;</button>
+        </div>
+        
+        <div class="modal-body">
+            <p class="verification-text">
+                We've sent a verification code to your email address. 
+                Please enter the code below to complete your registration.
+            </p>
+            
+            <form id="verification-form" class="verification-form">
+                <div class="input-group">
+                    <label for="verification-code">Verification Code</label>
+                    <input 
+                        type="text" 
+                        id="verification-code" 
+                        name="verificationCode" 
+                        placeholder="Enter verification code"
+                        maxlength="6"
+                        required
+                        autocomplete="off"
+                    >
+                </div>
+                
+                <div id="error-message" class="error-message" style="display: none;"></div>
+                
+                <button type="submit" class="verify-btn" id="verify-button">
+                    <span class="btn-text">Verify Code</span>
+                    <span class="btn-spinner" style="display: none;">
+                        <div class="spinner"></div>
+                    </span>
+                </button>
+            </form>
+            
+            <div class="resend-section">
+                <p>Didn't receive the code? 
+                    <button type="button" class="resend-btn" id="resend-btn">Resend Code</button>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <script>
+const initRegisterModal = async () => {
+    const MODAL_WRAPPER = document.getElementById('register-modal')
+
+    const verificationModal = document.getElementById('verification-form')
+    const codeInput = document.getElementById('verification-code')
+    const errorMessage = document.getElementById('error-message')
+
+    const submitBtn = document.getElementById('verify-button')
+    const closeBtn = document.getElementById('close-button')
+
+    verificationModal.addEventListener('submit', async (e) => {
+        e.preventDefault()
+        
+        const code = codeInput.value.trim()
+        const sessionId = sessionStorage.getItem('sessionId')
+        
+        if (!code) {
+            errorMessage.textContent = 'Please enter the verification code'
+            errorMessage.style.display = 'block'
+            return
+        }
+
+        if (!sessionId) {
+            errorMessage.textContent = 'Session expired. Please try registering again.'
+            errorMessage.style.display = 'block'
+            return
+        }
+        
+        submitBtn.disabled = true
+        errorMessage.style.display = 'none'
+        
+        try {
+            const request_body = {
+                'sessionId': sessionId,
+                'verificationCode': code,
+            }
+
+            const response = await fetch('/api/auth/confirm-user', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(request_body)
+            })
+            
+            if (response.ok) {
+                sessionStorage.removeItem('sessionId')
+                window.location.href = '/index.html'
+            } else {
+                errorMessage.textContent = 'Verification failed. Please try again.'
+                errorMessage.style.display = 'block'
+            }
+        } catch (error) {
+            errorMessage.textContent = 'Something went wrong. Please try again.'
+            errorMessage.style.display = 'block'
+        } finally {
+            submitBtn.disabled = false
+        }
+    })
+
+    closeBtn.addEventListener('click', async (e) => {
+        console.log("here")
+        MODAL_WRAPPER.remove()
+    })
+}
+</script> -->

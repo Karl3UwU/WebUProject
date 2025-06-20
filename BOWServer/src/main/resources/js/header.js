@@ -1,5 +1,6 @@
 // Header-specific functionality
 function initializeHeader() {
+    console.log('should be called to init')
     const authButtonsContainer = document.querySelector('.auth-buttons');
     const user = JSON.parse(localStorage.getItem('loggedInUser'));
 

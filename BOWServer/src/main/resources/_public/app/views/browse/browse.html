@@ -1,0 +1,53 @@
+<main id="browse-view">
+    <!-- Browse Section -->
+    <section class="browse-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 id="browseTitle">Browse Books</h1>
+                <p id="browseSubtitle">Explore our collection</p>
+            </div>
+
+            <div class="browse-layout">
+                <!-- Filter Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label for="filterTitle">Book Title</label>
+                        <input type="text" id="filterTitle" placeholder="Search by book title" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterAuthor">Author</label>
+                        <input type="text" id="filterAuthor" placeholder="Search by author name" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterGenre">Genre</label>
+                        <input type="text" id="filterGenre" placeholder="Search by genre" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterLanguage">Language</label>
+                        <input type="text" id="filterLanguage" placeholder="Search by language code" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterMinRating">Minimum Rating</label>
+                        <input type="number" step="1" min="0" max="10" id="filterMinRating" placeholder="Enter minimum rating" />
+                    </div>
+                    <button id="applyFiltersBtn" class="btn btn-primary">Apply Filters</button>
+
+
+                </aside>
+
+                <!-- Books Grid -->
+                <div class="books-grid" id="browseGrid">
+                    <!-- Books dynamically inserted here -->
+                </div>
+            </div>
+
+            <div class="load-more-container">
+                <button class="btn btn-secondary" id="loadMoreBtn">
+                    <img src="resource/app/assets/loader.svg" alt="Load More" class="icon">
+                    Load More Books
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
