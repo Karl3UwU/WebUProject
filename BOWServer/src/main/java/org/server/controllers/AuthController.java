@@ -52,7 +52,7 @@ public class AuthController {
                         .body(null);
             }
 
-            String token = JWTUtil.createToken(email);
+            String token = SessionManager.createSession(email);
             return ResponseEntity.ok()
                     .contentType("application/json")
                     .body(new LoginDTO(token));
