@@ -68,20 +68,25 @@ function loadFilteredBooks() {
     const language = document.getElementById("filterLanguage").value.trim();
     const minRatingStr = document.getElementById("filterMinRating").value.trim();
 
-    const params = new URLSearchParams();
+    // Manually build query string with proper encoding
+    const queryParts = [];
 
-    if (title) params.append("title", title);
-    if (author) params.append("author", author);
-    if (genre) params.append("genre", genre);
-    if (language) params.append("language", language);
+    if (title) queryParts.push(`title=${encodeURIComponent(title)}`);
+    if (author) queryParts.push(`author=${encodeURIComponent(author)}`);
+    if (genre) queryParts.push(`genre=${encodeURIComponent(genre)}`);
+    if (language) queryParts.push(`language=${encodeURIComponent(language)}`);
     if (minRatingStr) {
         const minRating = parseFloat(minRatingStr);
         if (!isNaN(minRating)) {
-            params.append("minRating", minRating);
+            queryParts.push(`minRating=${encodeURIComponent(minRating)}`);
         }
     }
 
-    const url = "/api/books/filter?" + params.toString();
+    const queryString = queryParts.join('&');
+    const url = `/api/books/filter?${queryString}`;
+
+    console.log("Final URL:", url);
+
     fetch(url)
         .then(response => {
             if (!response.ok) throw new Error("Failed to load books.");
