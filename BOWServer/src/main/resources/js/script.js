@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
         e.preventDefault();
         const query = searchInput.value.trim();
         if (query) {
-            sessionStorage.setItem("filterTitle", query);
+            sessionStorage.setItem("searchTitle", query);
             window.location.href = "browse.html";
         }
     });
