@@ -8,6 +8,7 @@ import org.server.enums.HttpStatus;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.QueryParam;
 import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
@@ -65,36 +66,44 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<Boolean> registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
-        Boolean result = AuthService.registerUser(userRegisterDTO);
+    public ResponseEntity<String> registerUser(@RequestBody UserRegisterDTO userRegisterDTO) {
+        String result = AuthService.registerUser(userRegisterDTO);
 
-        return ResponseEntity.status(result ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR)
+        return ResponseEntity.status(result != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR)
                 .contentType("application/json")
                 .body(result);
     }
 
-//    @GetMapping("/getUser")
-//    public ResponseEntity<String> getUser(@RequestHeader("Authorization") String authToken) {
-//        if (authToken == null || authToken.trim().isEmpty()) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                    .contentType("application/json")
-//                    .body(null);
-//        }
-//
-//        if (authToken.startsWith("Bearer ")) {
-//            authToken = authToken.substring(7); // Remove "Bearer "
-//        }
-//
-//        String userEmail = SessionManager.getUserEmailFromToken(authToken);
-//        if( userEmail == null) {
-//            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-//                    .contentType("application/json")
-//                    .body(null);
-//        }
-//
-//        return ResponseEntity.ok()
-//                .contentType("application/json")
-//                .body(new Gson().toJson(new UserInfoDTO(userEmail)));
-//
-//    }
+    @PostMapping("/confirm-user")
+    public ResponseEntity<String> confirmUser(
+            @QueryParam("sessionId") String sessionId,
+            @QueryParam("verificationCode") String verificationCode
+    ) {
+        String result = AuthService.verifyEmail(sessionId, verificationCode);
+
+        return ResponseEntity.status(result != null ? HttpStatus.CREATED : HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body(result);
+    }
+
+    @GetMapping("/getUser")
+    public ResponseEntity<UserInfoDTO> getUser(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if( userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        UserInfoDTO userInfo = AuthService.getUserDataByEmail(userEmail);
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(userInfo);
+    }
 }

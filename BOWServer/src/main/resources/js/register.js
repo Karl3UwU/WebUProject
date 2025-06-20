@@ -38,17 +38,19 @@ document.addEventListener("DOMContentLoaded", () => {
                 body: JSON.stringify(userData)
             })
 
+            console.log('Response: ', response)
+
             if(!response) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
 
-            const result = await response.json();
+            const result = await response.text();
             console.log('User registered successfully:', result);
         } catch (error) {
             console.error('Error registering user:', error);
         }
 
 
-        window.location.href = "index.html";
+//        window.location.href = "index.html";
     });
 });
