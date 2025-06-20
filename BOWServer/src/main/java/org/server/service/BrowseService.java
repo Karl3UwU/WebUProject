@@ -125,7 +125,6 @@ public class BrowseService {
                 book.setLanguage(rs.getString("language"));
                 book.setPage_count(rs.getInt("page_count"));
                 book.setRating(rs.getDouble("avg_rating"));
-
                 Array genreArray = rs.getArray("genres");
                 if (genreArray != null) {
                     String[] genresStr = (String[]) genreArray.getArray();

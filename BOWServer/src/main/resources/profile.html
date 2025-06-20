@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="css/header.css" />
     <link rel="stylesheet" href="css/footer.css" />
     <link rel="stylesheet" href="css/profile.css" />
+    <link rel="stylesheet" href="css/reviews.css" />
+    <link rel="stylesheet" href="css/browse.css" />
     <link rel="icon" href="images/favicon.svg" type="image/svg+xml" />
 </head>
 <body>
@@ -16,32 +18,25 @@
 <main class="container profile-page">
     <section class="profile-header card">
         <div class="profile-header-content">
-            <h1 class="profile-title">Welcome, <span id="userName">User</span></h1>
-            <p class="profile-email" id="userEmail">Email: user@example.com</p>
+            <h1 class="profile-title">Welcome, <span id="userName"></span></h1>
+            <p class="profile-email" id="userEmail"></p>
+            <p class="profile-email" id="userRole"></p>
+            <p class="profile-email" id="userFullName"></p>
             <button class="btn btn-secondary" id="editProfileBtn">Edit Profile</button>
         </div>
     </section>
 
     <section class="profile-sections">
         <div class="card">
-            <h2>Currently Reading</h2>
-            <div class="book-list" id="readingList">
-                <p>No books currently reading.</p>
-            </div>
+            <h2>My Bookshelf</h2>
+            <div class="book-list" id="userBooks"></div>
+            <button class="btn btn-primary" id="loadMoreBooks" style="display: none;">Load More</button>
         </div>
 
         <div class="card">
-            <h2>Highlighted Books</h2>
-            <div class="book-list" id="highlightedBooks">
-                <p>No highlighted books yet.</p>
-            </div>
-        </div>
-
-        <div class="card">
-            <h2>Your Reviews</h2>
-            <div class="review-list" id="userReviews">
-                <p>You haven't posted any reviews yet.</p>
-            </div>
+            <h2>My Reviews</h2>
+            <div class="review-list" id="userReviews"></div>
+            <button class="btn btn-primary" id="loadMoreReviews" style="display: none;">Load More</button>
         </div>
     </section>
 </main>
@@ -51,5 +46,6 @@
 <script src="js/script.js"></script>
 <script src="js/loader.js"></script>
 <script src="js/header.js"></script>
+<script src="js/profile.js"></script>
 </body>
 </html>
