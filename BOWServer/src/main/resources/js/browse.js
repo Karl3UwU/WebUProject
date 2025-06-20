@@ -14,20 +14,20 @@ window.addEventListener("DOMContentLoaded", () => {
             sessionStorage.removeItem("searchTitle");
 
             setTimeout(() => {
-                applyBtn?.click(); // ✅ Simulate the user clicking Apply Filters
+                applyBtn?.click();
             }, 150);
         }
     }
     if (storedGenre) {
-        const genreInput = document.getElementById("filterGenre"); // ✅ Corrected ID
-        const applyBtn = document.getElementById("applyFiltersBtn"); // ✅ Also matches your button
+        const genreInput = document.getElementById("filterGenre");
+        const applyBtn = document.getElementById("applyFiltersBtn");
 
         if (genreInput) {
             genreInput.value = storedGenre;
             sessionStorage.removeItem("selectedGenre");
 
             setTimeout(() => {
-                applyBtn?.click(); // ✅ Simulate the user clicking Apply Filters
+                applyBtn?.click();
             }, 150);
         }
     }
@@ -142,7 +142,6 @@ function renderNextPage() {
 
     currentPage++;
 
-    // Hide "Load More" if all books are rendered
     const loadMoreBtn = document.getElementById("loadMoreBtn");
     if (currentPage * booksPerPage >= currentBooks.length) {
         loadMoreBtn.style.display = "none";
