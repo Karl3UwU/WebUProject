@@ -37,7 +37,6 @@ Object.entries(genres).forEach(([key, description]) => {
     <p class="genre-description">${description}</p>
   `;
     card.addEventListener("click", () => {
-        //make the key only have the first letter capitalized
         const formattedKey = key.charAt(0).toUpperCase() + key.slice(1).toLowerCase();
         sessionStorage.setItem("selectedGenre", formattedKey);
         window.location.href = "browse.html";

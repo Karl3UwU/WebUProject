@@ -4,6 +4,20 @@ let currentBooks = [];
 
 window.addEventListener("DOMContentLoaded", () => {
     const storedGenre = sessionStorage.getItem("selectedGenre");
+    const searchTitle = sessionStorage.getItem("searchTitle");
+    if(searchTitle) {
+        const titleInput = document.getElementById("filterTitle");
+        const applyBtn = document.getElementById("applyFiltersBtn");
+
+        if (titleInput) {
+            titleInput.value = searchTitle;
+            sessionStorage.removeItem("searchTitle");
+
+            setTimeout(() => {
+                applyBtn?.click(); // ✅ Simulate the user clicking Apply Filters
+            }, 150);
+        }
+    }
     if (storedGenre) {
         const genreInput = document.getElementById("filterGenre"); // ✅ Corrected ID
         const applyBtn = document.getElementById("applyFiltersBtn"); // ✅ Also matches your button
