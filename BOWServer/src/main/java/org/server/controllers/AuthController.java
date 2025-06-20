@@ -106,4 +106,135 @@ public class AuthController {
                 .contentType("application/json")
                 .body(userInfo);
     }
+
+    @GetMapping("/getReviews")
+    public ResponseEntity<String> getReviews(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String reviews = AuthService.getReviewsByEmail(userEmail);
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(reviews);
+    }
+
+    @GetMapping("/getBookshelf")
+    public ResponseEntity<String> getBookshelf(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String bookshelf = AuthService.getBookshelfByEmail(userEmail);
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(bookshelf);
+    }
+
+    @GetMapping("/deleteReview")
+    public ResponseEntity<String> deleteReview(
+            @RequestHeader("Authorization") String authToken,
+            @RequestParam("bookId") String bookId) {
+
+        if (authToken == null || authToken.trim().isEmpty() || bookId == null || bookId.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        boolean deleted = AuthService.deleteReviewById(bookId, userEmail);
+
+        return deleted ? ResponseEntity.ok()
+                .contentType("application/json")
+                .body("{\"message\": \"Review deleted successfully\"}")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body("{\"message\": \"Failed to delete review\"}");
+    }
+
+    @GetMapping("/deleteBookFromShelf")
+    public ResponseEntity<String> deleteBookshelf(
+            @RequestHeader("Authorization") String authToken,
+            @RequestParam("bookId") String bookId) {
+
+        if (authToken == null || authToken.trim().isEmpty() || bookId == null || bookId.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        boolean deleted = AuthService.deleteBookFromBookshelf(bookId, userEmail);
+
+        return deleted ? ResponseEntity.ok()
+                .contentType("application/json")
+                .body("{\"message\": \"Book deleted from bookshelf successfully\"}")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body("{\"message\": \"Failed to delete book from bookshelf\"}");
+    }
+
+    @GetMapping("/editBookStatus")
+    public ResponseEntity<String> editBookStatus(
+            @RequestHeader("Authorization") String authToken,
+            @RequestParam("bookId") String bookId,
+            @RequestParam("Status") String status) {
+
+        if (authToken == null || authToken.trim().isEmpty() || bookId == null || bookId.trim().isEmpty() || status == null || status.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        boolean updated = AuthService.updateBookStatus(bookId, userEmail, status);
+
+        return updated ? ResponseEntity.ok()
+                .contentType("application/json")
+                .body("{\"message\": \"Book Status updated successfully\"}")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body("{\"message\": \"Failed to update book Status\"}");
+    }
+
+
 }

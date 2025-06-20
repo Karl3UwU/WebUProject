@@ -1,3 +1,4 @@
+// login.js - Updated login script
 document.addEventListener("DOMContentLoaded", () => {
     loadHTML("header.html", "#header");
     loadHTML("footer.html", "#footer");
@@ -36,14 +37,14 @@ document.addEventListener("DOMContentLoaded", () => {
             body: new URLSearchParams(loginData)
         })
             .then(response => {
-                if (!response.ok) throw new Error("Failed to load books.");
+                if (!response.ok) throw new Error("Failed to login.");
                 return response.json();
             })
             .then(data => {
                 console.log("Login response:", data);
-                if (data) {
+                if (data && data.authToken) {
                     localStorage.setItem("token", data.authToken);
-                    localStorage.setItem("loggedInUser", JSON.stringify({ email }));
+
                     window.location.href = "index.html";
                 } else {
                     alert(data.message || "Login failed.");
