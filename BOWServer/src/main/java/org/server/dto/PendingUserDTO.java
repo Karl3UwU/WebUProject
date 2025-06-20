@@ -1,27 +1,29 @@
 package org.server.dto;
 
-import org.server.enums.UserRole;
-
-public class UserInfoDTO {
+public class PendingUserDTO {
+    long expiresAt;
+    String verificationCode;
     String username;
     String firstName;
     String lastName;
     String email;
-    UserRole role;
+    String password;
 
-    public UserInfoDTO(String username, String firstName, String lastName, String email, UserRole role) {
-        this.username = username;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.email = email;
-        this.role = role;
+    public long getExpiresAt() {
+        return expiresAt;
     }
 
-    public UserInfoDTO(String email) {
-        this.email = email;
+    public void setExpiresAt(long expiresAt) {
+        this.expiresAt = expiresAt;
     }
 
-    public UserInfoDTO() {}
+    public String getVerificationCode() {
+        return verificationCode;
+    }
+
+    public void setVerificationCode(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
 
     public String getUsername() {
         return username;
@@ -55,11 +57,11 @@ public class UserInfoDTO {
         this.email = email;
     }
 
-    public UserRole getRole() {
-        return role;
+    public String getPassword() {
+        return password;
     }
 
-    public void setRole(UserRole role) {
-        this.role = role;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
