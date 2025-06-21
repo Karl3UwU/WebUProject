@@ -96,3 +96,7 @@
 .book-card:hover {
     transform: translateY(-4px);
 }
+
+.hidden {
+    display: none;
+}

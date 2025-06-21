@@ -106,4 +106,26 @@ public class AuthController {
                 .contentType("application/json")
                 .body(userInfo);
     }
+
+    @GetMapping("/verify-token")
+    public ResponseEntity<Boolean> verifyToken(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(false);
+        }
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(SessionManager.isTokenActive(authToken));
+    }
+
+    @PostMapping("/logout-user")
+    public ResponseEntity<Boolean> logoutUser(@RequestHeader("Authorization") String authToken) {
+        SessionManager.invalidateToken(authToken);
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(true);
+    }
 }

@@ -16,14 +16,25 @@
         </div>
 
         <div class="auth-buttons">
-            <a href="login" class="btn btn-secondary" id="loginBtn">
+            <!-- NOT LOGGED IN -->
+            <a href="login" class="btn btn-secondary" id="login-btn">
                 <img src="resource/app/assets/log-in.svg" alt="Log in" class="icon">
                 Login
             </a>
-            <a href="register" class="btn btn-primary" id="signupBtn">
+            <a href="register" class="btn btn-primary" id="signup-btn">
                 <img src="resource/app/assets/user-plus.svg" alt="Sign up" class="icon">
                 Sign Up
             </a>
+            <!-- NOT LOGGED IN -->
+
+            <!-- IS LOGGED IN -->
+            <button class="btn btn-secondary hidden" id="logout-btn">
+                <img src="resource/app/assets/log-out.svg" alt="Log out" class="icon"> Log Out
+            </button> 
+            <a href="profile.html" class="btn btn-primary hidden" id="profile-btn">
+                <img src="resource/app/assets/user.svg" alt="Profile" class="icon"> Profile
+            </a>
+            <!-- IS LOGGED IN -->
         </div>
     </nav>
 </header>

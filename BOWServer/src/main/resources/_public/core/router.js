@@ -4,6 +4,9 @@ import { HomeView } from "../app/views/home/home.js"
 import { BrowseView } from "../app/views/browse/browse.js"
 import { ContactView } from "../app/views/contact-us/contact.js"
 import { RegisterView } from "../app/views/register/register.js"
+import { LoginView } from "../app/views/login/login.js"
+import { BookView } from "../app/views/book/book.js"
+import { CategoriesView } from "../app/views/categories/categories.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
@@ -20,6 +23,9 @@ const routes = {
   '/browse': BrowseView,
   '/contact-us': ContactView,
   '/register': RegisterView,
+  '/login': LoginView,
+  '/book': BookView,
+  '/categories': CategoriesView,
 }
 
 const onRouteChange = async () => {
@@ -62,13 +68,13 @@ document.body.addEventListener('click', (event) => {
     history.pushState(null, '', href)
     onRouteChange()
   }
-});
+})
 
 // Handle back/forward browser buttons
-window.addEventListener('popstate', onRouteChange);
+window.addEventListener('popstate', onRouteChange)
 
 window.addEventListener('DOMContentLoaded', async () => {
-  mountView(header_element, HeaderComponent)
+  await mountView(header_element, HeaderComponent)
   mountView(footer_element, FooterComponent)
-  onRouteChange();
-});
+  onRouteChange()
+})

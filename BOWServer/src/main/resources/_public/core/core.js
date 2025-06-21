@@ -44,12 +44,12 @@ const mountView = async (parent, ViewComponent, props) => {
 
   // mount
   await instance.mount(props)
-  parent.__viewInstance = instance
+  parent.__instance = instance
   return instance
 }
 
 const unmountView = async (parent) => {
-  const instance = parent.__viewInstance
+  const instance = parent.__instance
   if (!instance) return
 
   // Remove HTML content
@@ -61,11 +61,11 @@ const unmountView = async (parent) => {
   if (styleTag) styleTag.remove()
 
   // Cleanup reference
-  delete parent.__viewInstance
+  delete parent.__instance
 }
 
 const unmountAndMount = async (parent, ViewComponent, props) => {
-  const parent_instance = parent.__viewInstance
+  const parent_instance = parent.__instance
   const instance = new ViewComponent()
 
   let css_style = undefined
@@ -100,7 +100,7 @@ const unmountAndMount = async (parent, ViewComponent, props) => {
     if (styleTag) styleTag.remove()
 
     // Cleanup reference
-    delete parent.__viewInstance
+    delete parent.__instance
   }
 
   // MOUNT NEW INSTANCE
@@ -129,7 +129,7 @@ const unmountAndMount = async (parent, ViewComponent, props) => {
 
   // mount
   await instance.mount(props)
-  parent.__viewInstance = instance
+  parent.__instance = instance
   return instance
 }
 
