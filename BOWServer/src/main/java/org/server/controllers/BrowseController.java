@@ -66,11 +66,17 @@ public class BrowseController {
             @RequestParam(value = "genres", required = false) String genresStr
     ) {
         try {
-            System.out.println("Received genresStr: " + genresStr);
-            String[] genresArr = genresStr.split(",");
-            genre[] genres = new genre[genresArr.length];
-            for (int i = 0; i < genresArr.length; i++) {
-                genres[i] = genre.valueOf(genresArr[i].trim().toUpperCase());
+            genre[] genres;
+            if( genresStr != null && !genresStr.trim().isEmpty()) {
+                System.out.println("Received genresStr: " + genresStr);
+                String[] genresArr = genresStr.split(",");
+                genres = new genre[genresArr.length];
+                for (int i = 0; i < genresArr.length; i++) {
+                    genres[i] = genre.valueOf(genresArr[i].trim().toUpperCase());
+                }
+            }
+            else {
+                genres = new genre[0];
             }
             // Validate required fields
             if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
