@@ -93,6 +93,7 @@ function loadFilteredBooks() {
             return response.json();
         })
         .then(books => {
+            console.log("Books loaded:", books);
             currentBooks = books;
             currentPage = 0;
             window.scrollTo({ top: 0, behavior: "smooth" });

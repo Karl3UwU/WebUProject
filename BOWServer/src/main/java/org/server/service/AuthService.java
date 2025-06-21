@@ -346,6 +346,37 @@ public class AuthService {
         }
     }
 
+    public static boolean changeUserPassword(String userEmail, String oldPassword, String newPassword) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT password FROM users WHERE email = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userEmail);
+            ResultSet rs = statement.executeQuery();
+
+            if (!rs.next()) {
+                return false; // User not found
+            }
+
+            String currentPassword = rs.getString("password");
+            if (!PasswordUtil.checkPassword(userEmail, oldPassword, currentPassword)) {
+                return false; // Old password does not match
+            }
+
+            String newEncryptedPassword = PasswordUtil.encryptPassword(userEmail+ newPassword);
+            String newSql = "UPDATE users SET password = ? WHERE email = ?";
+            PreparedStatement newStatement = conn.prepareStatement(newSql);
+            newStatement.setString(1, newEncryptedPassword);
+            newStatement.setString(2, userEmail);
+
+            int rowsAffected = newStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     private UserInfoDTO userModelToDTO(User user) {
         return new UserInfoDTO(
                 user.getUsername(),

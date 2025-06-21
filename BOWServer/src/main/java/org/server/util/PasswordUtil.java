@@ -72,4 +72,17 @@ public class PasswordUtil {
         random.nextBytes(salt);
         return Base64.getEncoder().encodeToString(salt);
     }
+
+    public static boolean checkPassword(String userEmail, String oldPassword, String currentPassword) {
+        if (oldPassword == null || currentPassword == null) {
+            return false;
+        }
+
+        try {
+            String encryptedOldPassword = encryptPassword(userEmail + oldPassword);
+            return encryptedOldPassword.equals(currentPassword);
+        } catch (Exception e) {
+            return false;
+        }
+    }
 }

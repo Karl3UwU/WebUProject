@@ -236,5 +236,55 @@ public class AuthController {
                 .body("{\"message\": \"Failed to update book Status\"}");
     }
 
+    @GetMapping("/changePassword")
+    public ResponseEntity<String> editPassword(
+            @RequestHeader("Authorization") String authToken,
+            @RequestParam("oldPassword") String oldPassword,
+            @RequestParam("newPassword") String newPassword) {
+
+        if (authToken == null || authToken.trim().isEmpty() || oldPassword == null || oldPassword.trim().isEmpty() || newPassword == null || newPassword.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        String userEmail = SessionManager.getUserEmailFromToken(authToken);
+        if (userEmail == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(null);
+        }
+
+        boolean updated = AuthService.changeUserPassword(userEmail, oldPassword, newPassword);
+
+        return updated ? ResponseEntity.ok()
+                .contentType("application/json")
+                .body("{\"message\": \"Password updated successfully\"}")
+                : ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .contentType("application/json")
+                .body("{\"message\": \"Failed to update password\"}");
+    }
+    @GetMapping("/verify-token")
+    public ResponseEntity<Boolean> verifyToken(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(false);
+        }
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(SessionManager.isTokenActive(authToken));
+    }
+
+    @PostMapping("/logout-user")
+    public ResponseEntity<Boolean> logoutUser(@RequestHeader("Authorization") String authToken) {
+        SessionManager.invalidateToken(authToken);
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(true);
+    }
+
 
 }
