@@ -7,6 +7,7 @@ import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
 import org.server.router.annotations.request.RequestParam;
+import org.server.session.SessionManager;
 import org.server.util.ResponseEntity;
 import org.server.service.BrowseService;
 
@@ -62,29 +63,20 @@ public class BrowseController {
             @RequestParam(value = "author") String author,
             @RequestParam(value = "language", required = false) String language,
             @RequestParam(value = "page_count", required = false) String pageCount,
-            @RequestParam(value = "genres", required = false) String[] genresStr
+            @RequestParam(value = "genres", required = false) String genresStr
     ) {
         try {
+            System.out.println("Received genresStr: " + genresStr);
+            String[] genresArr = genresStr.split(",");
+            genre[] genres = new genre[genresArr.length];
+            for (int i = 0; i < genresArr.length; i++) {
+                genres[i] = genre.valueOf(genresArr[i].trim().toUpperCase());
+            }
             // Validate required fields
             if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
                 return ResponseEntity.status(400)
                         .contentType("application/json")
                         .body("{\"error\": \"Both title and author are required.\"}");
-            }
-
-            // Convert String[] to genre[]
-            genre[] genres = null;
-            if (genresStr != null && genresStr.length > 0) {
-                genres = new genre[genresStr.length];
-                for (int i = 0; i < genresStr.length; i++) {
-                    try {
-                        genres[i] = genre.valueOf(genresStr[i].toUpperCase());
-                    } catch (IllegalArgumentException e) {
-                        return ResponseEntity.status(400)
-                                .contentType("application/json")
-                                .body("{\"error\": \"Invalid genre: " + genresStr[i] + "\"}");
-                    }
-                }
             }
 
             BookDTO book = new BookDTO();
@@ -126,6 +118,148 @@ public class BrowseController {
             return ResponseEntity.status(500).body(null);
         }
     }
+
+    @GetMapping("/addToBookshelf")
+    public ResponseEntity<String> addToBookshelf(
+            @RequestParam(value = "bookId") String bookId,
+            @RequestParam(value = "email") String email) {
+        try {
+            int _bookId= Integer.parseInt(bookId);
+            boolean success = BrowseService.addToBookshelf(_bookId, email);
+            if (success) {
+                return ResponseEntity.ok()
+                        .contentType("application/json")
+                        .body("{\"message\": \"Book added to bookshelf successfully.\"}");
+            } else {
+                return ResponseEntity.status(500)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Failed to add book to bookshelf.\"}");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType("application/json")
+                    .body("{\"error\": \"Internal server error.\"}");
+        }
+    }
+
+    @GetMapping("writeReview")
+    public ResponseEntity<String> writeReview(
+            @RequestParam(value = "bookId") String bookId,
+            @RequestParam(value = "email") String email,
+            @RequestParam(value = "rating") String ratingStr,
+            @RequestParam(value = "review") String review) {
+        try {
+            int _bookId = Integer.parseInt(bookId);
+            double rating = Double.parseDouble(ratingStr);
+            boolean success = BrowseService.writeReview(_bookId, email, rating, review);
+            if (success) {
+                return ResponseEntity.ok()
+                        .contentType("application/json")
+                        .body("{\"message\": \"Review submitted successfully.\"}");
+            } else {
+                return ResponseEntity.status(500)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Failed to submit review.\"}");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType("application/json")
+                    .body("{\"error\": \"Internal server error.\"}");
+        }
+    }
+
+    @GetMapping("/getAllSuggestions")
+    public ResponseEntity<List<BookDTO>> getAllSuggestions() {
+        try {
+            List<BookDTO> suggestions = BrowseService.getAllSuggestions();
+            return ResponseEntity.ok()
+                    .contentType("application/json")
+                    .body(suggestions);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    @GetMapping("/deleteSuggestion")
+    public ResponseEntity<String> deleteSuggestion(
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "author") String author) {
+        try {
+            if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
+                return ResponseEntity.status(400)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Both title and author are required.\"}");
+            }
+
+            boolean success = BrowseService.deleteSuggestion(title.trim(), author.trim());
+            if (success) {
+                return ResponseEntity.ok()
+                        .contentType("application/json")
+                        .body("{\"message\": \"Suggestion deleted successfully.\"}");
+            } else {
+                return ResponseEntity.status(500)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Failed to delete suggestion.\"}");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType("application/json")
+                    .body("{\"error\": \"Internal server error.\"}");
+        }
+    }
+
+    @GetMapping("/postSuggestion")
+    public ResponseEntity<String> postSuggestion(
+            @RequestParam(value = "title") String title,
+            @RequestParam(value = "author") String author,
+            @RequestParam(value = "language") String language,
+            @RequestParam(value = "page_count") String pageCount,
+            @RequestParam(value = "genres") String genresStr) {
+        try {
+            System.out.println("Received genresStr: " + genresStr);
+            String[] genresArr = genresStr.split(",");
+            genre[] genres = new genre[genresArr.length];
+            for (int i = 0; i < genresArr.length; i++) {
+                genres[i] = genre.valueOf(genresArr[i].trim().toUpperCase());
+            }
+            // Validate required fields
+            if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
+                return ResponseEntity.status(400)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Both title and author are required.\"}");
+            }
+
+            BookDTO book = new BookDTO();
+            book.setTitle(title.trim());
+            book.setAuthor(author.trim());
+            book.setLanguage(language != null ? language.trim() : null);
+            book.setPage_count(pageCount != null ? Integer.parseInt(pageCount) : null);
+            book.setGenres(genres);
+
+            boolean success = BrowseService.submitSuggestionAsBook(book);
+
+            if (success) {
+                return ResponseEntity.ok()
+                        .contentType("application/json")
+                        .body("{\"message\": \"Book suggestion submitted successfully.\"}");
+            } else {
+                return ResponseEntity.status(500)
+                        .contentType("application/json")
+                        .body("{\"error\": \"Failed to submit book suggestion.\"}");
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500)
+                    .contentType("application/json")
+                    .body("{\"error\": \"Internal server error.\"}");
+        }
+    }
+
 
 
 

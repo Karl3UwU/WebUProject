@@ -3,6 +3,7 @@ package org.server.dto;
 import org.server.enums.genre;
 
 public class BookDTO {
+    private int id;
     private String title;
     private String author;
     private String language;
@@ -60,4 +61,10 @@ public class BookDTO {
     }
 
 
+    public int getId() {
+        return id;
+    }
+    public void setId(int id) {
+        this.id = id;
+    }
 }
