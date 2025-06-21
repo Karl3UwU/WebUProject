@@ -6,7 +6,9 @@ import org.server.dto.PendingUserDTO;
 import org.server.dto.UserInfoDTO;
 import org.server.dto.UserRegisterDTO;
 import org.server.enums.HttpStatus;
+import org.server.enums.Status;
 import org.server.enums.UserRole;
+import org.server.enums.genre;
 import org.server.model.User;
 import org.server.session.JWTUtil;
 import org.server.util.DBConnection;
@@ -16,10 +18,7 @@ import org.server.util.ResponseEntity;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -229,6 +228,153 @@ public class AuthService {
 
     private static String UserRegisterDTOToPassword (UserRegisterDTO registerDTO) {
         return registerDTO.getEmail() + registerDTO.getPassword();
+    }
+
+    public static String getReviewsByEmail(String userEmail) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT r.content, r.rating, u.username, b.title, b.id " +
+                         "FROM reviews r JOIN users u ON r.user_id = u.id " +
+                         "JOIN books b ON r.book_id = b.id " +
+                         "WHERE u.email = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userEmail);
+
+            ResultSet rs = statement.executeQuery();
+            List<Map<String, Object>> reviews = new ArrayList<>();
+
+            while(rs.next()) {
+                Map<String, Object> review = new HashMap<>();
+                review.put("content", rs.getString("content"));
+                review.put("rating", rs.getInt("rating"));
+                review.put("username", rs.getString("username"));
+                review.put("bookTitle", rs.getString("title"));
+                review.put("bookId", rs.getString("id"));
+                reviews.add(review);
+            }
+
+            return gson.toJson(reviews);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static String getBookshelfByEmail(String userEmail) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT b.title, b.author, bs.status, bs.book_id " +
+                         "FROM bookshelf bs JOIN users u ON bs.user_id = u.id " +
+                         "JOIN books b ON bs.book_id = b.id " +
+                         "WHERE u.email = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userEmail);
+
+            ResultSet rs = statement.executeQuery();
+            List<Map<String, Object>> bookshelf = new ArrayList<>();
+
+            while(rs.next()) {
+                Map<String, Object> bookInfo = new HashMap<>();
+                bookInfo.put("title",rs.getString("title"));
+                bookInfo.put("author",rs.getString("author"));
+                bookInfo.put("Status",rs.getString("Status"));
+                bookInfo.put("bookId", rs.getInt("book_id"));
+                bookshelf.add(bookInfo);
+            }
+
+            return gson.toJson(bookshelf);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static boolean deleteReviewById(String bookId, String userEmail) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "DELETE FROM reviews WHERE book_id = ? AND user_id = (SELECT id FROM users WHERE email = ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, Integer.parseInt(bookId)); // Parse to int
+            statement.setString(2, userEmail);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean deleteBookFromBookshelf(String bookId, String userEmail) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "DELETE FROM bookshelf WHERE book_id = ? AND user_id = (SELECT id FROM users WHERE email = ?)";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setInt(1, Integer.parseInt(bookId)); // Parse to int
+            statement.setString(2, userEmail);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean updateBookStatus(String bookId, String userEmail, String status) {
+        try {
+            // Validate Status
+            if (!Status.isValid(status)) {
+                System.out.println("Invalid Status: " + status);
+                return false;
+            }
+
+            String normalizedStatus = Status.normalize(status); // e.g., "completed" → "Completed"
+
+            try (Connection conn = DBConnection.getConnection()) {
+                String sql = "UPDATE bookshelf SET status = ?::book_status WHERE book_id = ? AND user_id = (SELECT id FROM users WHERE email = ?)";
+                PreparedStatement statement = conn.prepareStatement(sql);
+                statement.setString(1, normalizedStatus);
+                statement.setInt(2, Integer.parseInt(bookId));
+                statement.setString(3, userEmail);
+
+                int rowsAffected = statement.executeUpdate();
+                return rowsAffected > 0;
+            }
+        } catch (IllegalArgumentException e) {
+            System.out.println("Failed to normalize Status: " + e.getMessage());
+            return false;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean changeUserPassword(String userEmail, String oldPassword, String newPassword) {
+        try (Connection conn = DBConnection.getConnection()) {
+            String sql = "SELECT password FROM users WHERE email = ?";
+            PreparedStatement statement = conn.prepareStatement(sql);
+            statement.setString(1, userEmail);
+            ResultSet rs = statement.executeQuery();
+
+            if (!rs.next()) {
+                return false; // User not found
+            }
+
+            String currentPassword = rs.getString("password");
+            if (!PasswordUtil.checkPassword(userEmail, oldPassword, currentPassword)) {
+                return false; // Old password does not match
+            }
+
+            String newEncryptedPassword = PasswordUtil.encryptPassword(userEmail+ newPassword);
+            String newSql = "UPDATE users SET password = ? WHERE email = ?";
+            PreparedStatement newStatement = conn.prepareStatement(newSql);
+            newStatement.setString(1, newEncryptedPassword);
+            newStatement.setString(2, userEmail);
+
+            int rowsAffected = newStatement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private UserInfoDTO userModelToDTO(User user) {

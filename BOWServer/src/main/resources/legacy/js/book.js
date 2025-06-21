@@ -1,27 +1,120 @@
+let currentBook = null;
+
 document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("addToProfileBtn").addEventListener("click", () => {
-        if (isUserLoggedIn()) {
-            // TODO: Add to bookshelf logic
+    document.getElementById("addToProfileBtn").addEventListener("click", async () => {
+        if (await isUserLoggedIn()) {
+            const token = localStorage.getItem("token");
+            try {
+                const userRes = await fetch("/api/auth/getUser", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": token,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!userRes.ok) throw new Error("User fetch failed");
+
+                const user = await userRes.json();
+                console.log("Current user:", user);
+                const email = user.email;
+
+                const response = await fetch(`/api/books/addToBookshelf?bookId=${currentBook.id}&email=${email}`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": token,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Book successfully added to your profile!");
+                } else {
+                    console.error("Add to bookshelf failed:", data.error);
+                    alert("Failed to add book to profile.");
+                }
+            } catch (err) {
+                console.error("Error adding to profile:", err);
+                alert("Error while adding book to profile.");
+            }
         } else {
             window.location.href = "login.html";
         }
     });
 
-    document.getElementById("addToGroupBtn").addEventListener("click", () => {
-        if (isUserLoggedIn()) {
+
+    document.getElementById("addToGroupBtn").addEventListener("click", async () => {
+        if (await isUserLoggedIn()) {
             // TODO: Add to reading group logic
         } else {
             window.location.href = "login.html";
         }
     });
 
-    document.getElementById("writeReviewBtn").addEventListener("click", () => {
-        if (isUserLoggedIn()) {
-            // TODO: Write review logic
+    document.getElementById("writeReviewBtn").addEventListener("click", async () => {
+        if (await isUserLoggedIn()) {
+            const token = localStorage.getItem("token");
+
+            try {
+                // Get user details first
+                const userRes = await fetch("/api/auth/getUser", {
+                    method: "GET",
+                    headers: {
+                        "Authorization": token,
+                        "Content-Type": "application/json"
+                    }
+                });
+
+                if (!userRes.ok) throw new Error("User fetch failed");
+
+                const user = await userRes.json();
+                const email = user.email;
+
+                // Ask user for review input
+                const rating = prompt("Enter your rating (0-10):");
+                if (!rating || isNaN(rating) || rating < 0 || rating > 10) {
+                    alert("Please enter a valid rating between 0 and 10.");
+                    return;
+                }
+
+                const reviewText = prompt("Write your review:");
+                if (!reviewText || reviewText.trim() === "") {
+                    alert("Review text cannot be empty.");
+                    return;
+                }
+
+                const response = await fetch(
+                    `/api/books/writeReview?bookId=${currentBook.id}&email=${encodeURIComponent(email)}&rating=${rating}&review=${encodeURIComponent(reviewText)}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Authorization": token,
+                            "Content-Type": "application/json"
+                        }
+                    }
+                );
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    alert("Review submitted successfully!");
+                } else {
+                    console.error("Review submission failed:", data.error);
+                    alert("Failed to submit review.");
+                }
+
+            } catch (err) {
+                console.error("Error writing review:", err);
+                alert("An error occurred while submitting your review.");
+            }
+
         } else {
             window.location.href = "login.html";
         }
     });
+
     const params = new URLSearchParams(window.location.search);
     const title = params.get("title");
 
@@ -35,7 +128,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 document.querySelector("main").innerHTML = "<p>Book not found.</p>";
                 return;
             }
-
+            currentBook = book;
+            console.log("Loaded book:", book);
             renderBookInfo(book);
             loadReviews(book.title);
         })
@@ -102,10 +196,27 @@ function getStarRating(rating) {
     return "★".repeat(Math.round(rating)) + "☆".repeat(10 - Math.round(rating));
 }
 
-function isUserLoggedIn() {
-    // TODO: Replace this logic with your actual auth check
-    // Example: return Boolean(sessionStorage.getItem("userToken"));
-    // Or call /api/auth/status and cache the result
-    return false; // Simulating a not-logged-in user
+async function isUserLoggedIn() {
+    const token = localStorage.getItem("token");
+    if (!token) return false;
+
+    try {
+        const res = await fetch("/api/auth/verify-token", {
+            method: "GET",
+            headers: {
+                "Authorization": token,
+                "Content-Type": "application/json"
+            }
+        });
+
+        if (!res.ok) return false;
+
+        const isValid = await res.json();
+        return isValid === true;
+    } catch (error) {
+        console.error("Token verification failed:", error);
+        return false;
+    }
 }
+
 
