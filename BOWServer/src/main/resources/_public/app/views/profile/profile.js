@@ -169,8 +169,8 @@ class ProfileView {
       const paginatedReviews = userReviews.slice(this.reviewPage * this.pageSize, (this.reviewPage + 1) * this.pageSize);
 
       if (userReviews.length === 0 && this.reviewPage === 0) {
-        reviewsContainer.innerHTML = "<p>You haven't posted any reviews yet.</p>"
-        loadMoreReviews.classList.toggle('hidden', true)
+        this.elements.userReviews.innerHTML = "<p>You haven't posted any reviews yet.</p>"
+        this.elements.loadMoreReviews.classList.toggle('hidden', true)
         return
       }
 
