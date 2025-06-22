@@ -45,11 +45,14 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
 
-    document.getElementById("addToGroupBtn").addEventListener("click", async () => {
-        if (await isUserLoggedIn()) {
-            // TODO: Add to reading group logic
+    document.getElementById("findBookButton").addEventListener("click", () => {
+        if (!currentBook) return;
+
+        if (currentBook.isbn) {
+            window.open(`https://www.worldcat.org/isbn/${encodeURIComponent(currentBook.isbn)}`, "_blank");
         } else {
-            window.location.href = "login.html";
+            const query = `${currentBook.title} ${currentBook.author}`;
+            window.open(`https://www.worldcat.org/search?q=${encodeURIComponent(query)}`, "_blank");
         }
     });
 
@@ -217,6 +220,23 @@ async function isUserLoggedIn() {
         console.error("Token verification failed:", error);
         return false;
     }
+    function addFindBookButton(book, container) {
+        const button = document.createElement("button");
+        button.textContent = "Find in Library";
+        button.className = "btn btn-primary";
+
+        button.addEventListener("click", () => {
+            // Prefer ISBN if available for more precise match
+            if (book.isbn) {
+                window.open(`https://www.worldcat.org/isbn/${encodeURIComponent(book.isbn)}`, "_blank");
+            } else {
+                window.open(`https://www.worldcat.org/search?q=${encodeURIComponent(book.title + ' ' + book.author)}`, "_blank");
+            }
+        });
+
+        container.appendChild(button);
+    }
+
 }
 
 
