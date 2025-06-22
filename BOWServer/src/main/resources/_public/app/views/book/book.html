@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+</head>
+<body>
+<main id="book-view" class="book-details-container">
+    <section class="book-overview">
+        <img id="bookCover" src="resource/app/assets/default-cover.svg" alt="Book Cover" class="book-cover" />
+        <div class="book-details-container">
+            <div class="book-info">
+                <h1 id="bookTitle"></h1>
+                <p><strong>Author:</strong> <span id="bookAuthor"></span></p>
+                <p><strong>Language:</strong> <span id="bookLanguage"></span></p>
+                <p><strong>Genres:</strong> <span id="bookGenres"></span></p>
+                <p><strong>Pages:</strong> <span id="bookPages"></span></p>
+                <p><strong>Rating:</strong> <span id="bookRating"></span>/10</p>
+            </div>
+            <div class="book-actions">
+                <button class="btn-profile btn-primary" id="addToProfileBtn">Add to My Bookshelf</button>
+                <button class="btn-group btn-primary" id="findBookButton">Find this book</button>
+                <button class="btn-review btn-primary" id="writeReviewBtn">Write a Review</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="book-reviews">
+        <h2>Reviews</h2>
+        <div id="reviewsList"></div>
+    </section>
+</main>
+</body>
+</html>

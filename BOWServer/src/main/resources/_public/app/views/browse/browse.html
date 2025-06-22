@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Browse Books</title>
+</head>
+<body>
+<main id="browse-view">
+    <section class="browse-section">
+        <div class="container">
+            <div class="section-header enhanced-header" style="position: relative;">
+                <div class="text-center-group">
+                    <h1 id="browseTitle">Browse Books</h1>
+                    <p id="browseSubtitle">Explore our collection</p>
+                </div>
+
+                <button class="btn btn-secondary" id="exportDocBookBtn"
+                        title="Export as DocBook"
+                        style="position:absolute; top:8px; right:48px; padding:4px 8px;">
+                    <img src="resource/app/assets/docbook.svg" alt="Export DocBook"
+                         style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+
+                <button class="btn btn-secondary" id="exportBooksBtn"
+                        title="Export as CSV"
+                        style="position:absolute; top:8px; right:8px; padding:4px 8px;">
+                    <img src="resource/app/assets/download.svg" alt="Export Books"
+                         style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+            </div>
+
+            <div class="browse-layout">
+                <!-- Filter Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3>Filters</h3>
+                    <div class="filter-group">
+                        <label for="filterTitle">Book Title</label>
+                        <input type="text" id="filterTitle" placeholder="Search by book title" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterAuthor">Author</label>
+                        <input type="text" id="filterAuthor" placeholder="Search by author name" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterGenre">Genre</label>
+                        <input type="text" id="filterGenre" placeholder="Search by genre" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterLanguage">Language</label>
+                        <input type="text" id="filterLanguage" placeholder="Search by language code" />
+                    </div>
+                    <div class="filter-group">
+                        <label for="filterMinRating">Minimum Rating</label>
+                        <input type="number" step="1" min="0" max="10" id="filterMinRating" placeholder="Enter minimum rating" />
+                    </div>
+                    <button id="apply-filters-btn" class="btn btn-primary">Apply Filters</button>
+                </aside>
+
+                <div class="books-grid" id="browse-grid">
+                </div>
+            </div>
+
+            <div class="load-more-container">
+                <button class="btn btn-secondary" id="load-more-btn">
+                    <img src="resource/app/assets/loader.svg" alt="Load More" class="icon">
+                    Load More Books
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+</body>
+</html>

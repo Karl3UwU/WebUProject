@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submissions</title>
+</head>
+<main id="submissions-view" class="auth-page">
+    <section class="auth-container">
+        <h1 style="padding-bottom: 10px">Suggest a Book</h1>
+        <form id="submissionForm" class="auth-form">
+            <div class="form-group">
+                <label for="title">Title *</label>
+                <input type="text" id="title" required />
+            </div>
+
+            <div class="form-group">
+                <label for="author">Author *</label>
+                <input type="text" id="author" required />
+            </div>
+
+            <div class="form-group">
+                <label for="language">Language</label>
+                <input type="text" id="language" />
+            </div>
+
+            <div class="form-group">
+                <label for="page_count">Page Count</label>
+                <input type="number" id="page_count" min="1" />
+            </div>
+
+            <div class="form-group" style="position: relative;">
+                <label for="genres">Genres</label>
+                <input type="text" id="genres" placeholder="e.g. FANTASY, HUMOR" />
+                <img id="genreInfo" src="resource/app/assets/info.svg" alt="Info" style="position: absolute; right: 10px; top: 38px; cursor: pointer; width: 20px; height: 20px;" title="Click to view available genres" />
+                <div id="genreList" class="hidden" style="display: block; position: absolute; top: 60px; right: 0; background: #fff; padding: 10px; border: 1px solid #ccc; max-width: 250px; font-size: 0.9rem; z-index: 10;">
+                    FANTASY, SCIENCE_FICTION, MYSTERY, THRILLER, ROMANCE, HORROR, YOUNG_ADULT, CHILDREN_FICTION, BIOGRAPHY, AUTOBIOGRAPHY, HISTORY, SELF_HELP, SCIENCE, TRAVEL, CYBERPUNK, CLASSIC, MEMOIR, DRAMA, HUMOR, FICTION, PHILOSOPHY
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Submit Suggestion</button>
+        </form>
+    </section>
+</main>

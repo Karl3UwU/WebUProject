@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+</head>
+<main id="profile-view" class="container profile-page">
+    <section class="profile-header card">
+        <div class="profile-header-content">
+            <h1 class="profile-title">Welcome, <span id="userName"></span></h1>
+            <p class="profile-email" id="userEmail"></p>
+            <p class="profile-email" id="userRole"></p>
+            <p class="profile-email" id="userFullName"></p>
+            <button class="btn btn-secondary" id="changePasswordBtn" title="Change Password" style="position:absolute; top:8px; right:8px; padding:4px 8px;">
+                <img src="resource/app/assets/password.svg" alt="Change Password" style="width:16px;height:16px;vertical-align:middle;">
+            </button>
+            <button class="btn btn-secondary hidden" id="dashboardBtn" title="Admin Dashboard"
+                    style="position:absolute; top:8px; right:48px; padding:4px 8px;">
+                <img src="resource/app/assets/admin.svg" alt="Admin Dashboard" style="width:16px;height:16px;vertical-align:middle;">
+            </button>
+        </div>
+    </section>
+
+    <section class="profile-sections">
+        <div class="card">
+            <div style="position:relative;">
+                <h2>My Bookshelf</h2>
+                <button class="btn btn-secondary" id="exportBooksBtn"
+                        title="Export Bookshelf"
+                        style="position:absolute; top:0; right:0; padding:4px 8px;">
+                    <img src="resource/app/assets/download.svg" alt="Export Books" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+            </div>
+            <div class="book-list" id="userBooks"></div>
+            <button class="btn btn-primary" id="loadMoreBooks" style="display: none;">Load More</button>
+        </div>
+
+
+        <div class="card">
+            <div style="position:relative;">
+                <h2>My Reviews</h2>
+                <button class="btn btn-secondary" id="exportReviewsBtn"
+                        title="Export Reviews"
+                        style="position:absolute; top:0; right:0; padding:4px 8px;">
+                    <img src="resource/app/assets/download.svg" alt="Export Reviews" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+            </div>
+            <div class="review-list" id="userReviews"></div>
+            <button class="btn btn-primary" id="loadMoreReviews" style="display: none;">Load More</button>
+        </div>
+
+    </section>
+</main>

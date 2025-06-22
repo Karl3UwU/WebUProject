@@ -1,0 +1,127 @@
+.book-details-container {
+    max-width: 1000px;
+    margin: auto;
+    padding: 2rem;
+}
+
+.book-overview {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.book-cover {
+    width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.book-info p {
+    margin: 0.3em 0;
+}
+
+.review-card {
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.book-details-container {
+    background-color: #f0f0f0; /* soft gray background for contrast */
+    padding: 2rem;
+}
+
+.book-details-box {
+    background-color: #ffffff; /* white background */
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* soft shadow */
+    padding: 2rem;
+    max-width: 1000px;
+    margin: auto;
+}
+
+.book-overview {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.book-info p {
+    margin: 0.5em 0;
+    color: #333;
+}
+
+.book-actions {
+    margin-top: 20px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+
+.book-actions .btn {
+    padding: 10px 18px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: background 0.2s ease;
+}
+.book-details-container .btn-primary {
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    transform-origin: center;
+    background: none; /* Clear background here */
+}
+
+/* Common hover animation */
+.book-details-container .btn-primary:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Variant: Profile (blue) */
+.book-details-container .btn-profile {
+    background-color: #007bff !important;
+}
+.book-details-container .btn-profile:hover {
+    background-color: #0069d9 !important;
+}
+
+/* Variant: Group (green) */
+.book-details-container .btn-group {
+    background-color: #28a745 !important;
+}
+.book-details-container .btn-group:hover {
+    background-color: #218838 !important;
+}
+
+/* Variant: Review (orange) */
+.book-details-container .btn-review {
+    background-color: #ff9800 !important;
+}
+.book-details-container .btn-review:hover {
+    background-color: #e68900 !important;
+}
+
+
+.book-details-container .btn:hover {
+    opacity: 0.9;
+}
+
+
+.review-card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}

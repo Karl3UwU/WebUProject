@@ -1,6 +1,11 @@
 package org.server.controllers;
 
-import com.google.gson.Gson;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+
 import org.server.dto.LoginDTO;
 import org.server.dto.UserInfoDTO;
 import org.server.dto.UserRegisterDTO;
@@ -8,22 +13,14 @@ import org.server.enums.HttpStatus;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
-import org.server.router.annotations.request.QueryParam;
 import org.server.router.annotations.request.RequestBody;
 import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
 import org.server.service.AuthService;
 import org.server.session.SessionManager;
 import org.server.util.DBConnection;
-import org.server.session.JWTUtil;
 import org.server.util.PasswordUtil;
 import org.server.util.ResponseEntity;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Objects;
 
 @RequestMapping("/api/auth")
 public class AuthController {
@@ -76,8 +73,8 @@ public class AuthController {
 
     @PostMapping("/confirm-user")
     public ResponseEntity<String> confirmUser(
-            @QueryParam("sessionId") String sessionId,
-            @QueryParam("verificationCode") String verificationCode
+            @RequestParam("sessionId") String sessionId,
+            @RequestParam("verificationCode") String verificationCode
     ) {
         String result = AuthService.verifyEmail(sessionId, verificationCode);
 
@@ -105,6 +102,19 @@ public class AuthController {
         return ResponseEntity.ok()
                 .contentType("application/json")
                 .body(userInfo);
+    }
+
+    @GetMapping("/verify-token")
+    public ResponseEntity<Boolean> verifyToken(@RequestHeader("Authorization") String authToken) {
+        if (authToken == null || authToken.trim().isEmpty()) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .contentType("application/json")
+                    .body(false);
+        }
+
+        return ResponseEntity.ok()
+                .contentType("application/json")
+                .body(SessionManager.isTokenActive(authToken));
     }
 
     @GetMapping("/getReviews")
@@ -264,18 +274,6 @@ public class AuthController {
                 .contentType("application/json")
                 .body("{\"message\": \"Failed to update password\"}");
     }
-    @GetMapping("/verify-token")
-    public ResponseEntity<Boolean> verifyToken(@RequestHeader("Authorization") String authToken) {
-        if (authToken == null || authToken.trim().isEmpty()) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
-                    .contentType("application/json")
-                    .body(false);
-        }
-
-        return ResponseEntity.ok()
-                .contentType("application/json")
-                .body(SessionManager.isTokenActive(authToken));
-    }
 
     @PostMapping("/logout-user")
     public ResponseEntity<Boolean> logoutUser(@RequestHeader("Authorization") String authToken) {
@@ -285,6 +283,4 @@ public class AuthController {
                 .contentType("application/json")
                 .body(true);
     }
-
-
 }

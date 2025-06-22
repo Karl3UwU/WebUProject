@@ -2,11 +2,17 @@ package org.server.controllers;
 
 import org.server.dto.BookDTO;
 import org.server.dto.BookFilterDTO;
+import org.server.dto.SuggestionDTO;
+import org.server.dto.UserInfoDTO;
+import org.server.enums.UserRole;
 import org.server.enums.genre;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.RequestBody;
+import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
+import org.server.service.AuthService;
 import org.server.session.SessionManager;
 import org.server.util.ResponseEntity;
 import org.server.service.BrowseService;
@@ -177,12 +183,29 @@ public class BrowseController {
     }
 
     @GetMapping("/getAllSuggestions")
-    public ResponseEntity<List<BookDTO>> getAllSuggestions() {
+    public ResponseEntity<List<BookDTO>> getAllSuggestions(
+            @RequestHeader("Authorization") String authToken
+    ) {
         try {
+            //check if the user's role is admin
+            String email = SessionManager.getUserEmailFromToken(authToken);
+            UserInfoDTO userInfo = AuthService.getUserDataByEmail(email);
+            if(userInfo == null) {
+                return ResponseEntity.status(401)
+                        .contentType("application/json")
+                        .body(null);
+            }
+            if(userInfo.getRole() != UserRole.ADMIN) {
+                return ResponseEntity.status(403)
+                        .contentType("application/json")
+                        .body(null);
+            }
+
             List<BookDTO> suggestions = BrowseService.getAllSuggestions();
             return ResponseEntity.ok()
                     .contentType("application/json")
                     .body(suggestions);
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
@@ -218,13 +241,14 @@ public class BrowseController {
         }
     }
 
-    @GetMapping("/postSuggestion")
-    public ResponseEntity<String> postSuggestion(
-            @RequestParam(value = "title") String title,
-            @RequestParam(value = "author") String author,
-            @RequestParam(value = "language") String language,
-            @RequestParam(value = "page_count") String pageCount,
-            @RequestParam(value = "genres") String genresStr) {
+    @PostMapping("/postSuggestion")
+    public ResponseEntity<String> postSuggestion(@RequestBody SuggestionDTO suggestionDTO) {
+        String title = suggestionDTO.getTitle();
+        String author = suggestionDTO.getAuthor();
+        String language = suggestionDTO.getLanguage();
+        String pageCount = suggestionDTO.getPageCount();
+        String genresStr = suggestionDTO.getGenres();
+
         try {
             System.out.println("Received genresStr: " + genresStr);
             String[] genresArr = genresStr.split(",");
@@ -266,9 +290,20 @@ public class BrowseController {
         }
     }
 
-
-
-
-
-
+    @GetMapping("/isInBookshelf")
+    public ResponseEntity<Boolean> isInBookshelf(
+            @RequestParam(value = "bookId") String bookId,
+            @RequestHeader("Authorization") String authToken) {
+        try {
+            int _bookId = Integer.parseInt(bookId);
+            String email = SessionManager.getUserEmailFromToken(authToken);
+            boolean isInBookshelf = BrowseService.isInBookshelf(_bookId, email);
+            return ResponseEntity.ok()
+                    .contentType("application/json")
+                    .body(isInBookshelf);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 }
