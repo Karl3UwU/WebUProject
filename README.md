@@ -1,6 +1,5 @@
-GitHub Copilot
-Certainly! Here is the README content in plain Markdown format, ready to copy-paste into your README.md or readme.txt on GitHub. No special formatting or project file is needed—just copy everything below and paste it into your file.
-
+Demo video for the project: https://youtu.be/CeJteLBtjaA
+Also, documentation (C3 & C4 diagrams) are in the file projects.
 Books of Web
 Books of Web is a community-driven web application for discovering, reviewing, and sharing books. It features user authentication, book browsing and filtering, reviews, personal bookshelves, and an admin dashboard for managing book suggestions.
 
