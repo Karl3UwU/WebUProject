@@ -128,6 +128,5 @@ document.addEventListener("DOMContentLoaded", () => {
                 alert("An error occurred while deleting the suggestion.");
             }
         });
-
     }
 });

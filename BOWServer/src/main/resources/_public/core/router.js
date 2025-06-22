@@ -16,6 +16,7 @@ import { DashboardView } from "../app/views/dashboard/dashboard.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
+import { DashboardSuggestionsView } from "../app/views/dashboard-suggestions/dashboard-suggestions.js"
 
 const header_element = document.getElementById('components-header')
 const footer_element = document.getElementById('components-footer')
@@ -36,7 +37,8 @@ const routes = {
   '/shuffle': ShuffleView,
   '/reviews': ReviewsView,
   '/submissions': SubmissionsView,
-  '/dashboard': DashboardView
+  '/dashboard': DashboardView,
+  '/dashboard-suggestions': DashboardSuggestionsView,
 }
 
 const onRouteChange = async () => {
