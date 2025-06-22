@@ -1,0 +1,53 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    padding: 2rem 1rem;
+}
+
+.profile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    position:relative;
+}
+
+.profile-title {
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+}
+
+.profile-email {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.profile-sections {
+    display: grid;
+    gap: 2rem;
+}
+
+.card {
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+.book-list,
+.review-list {
+    margin-top: 1rem;
+}
+
+.book-list p,
+.review-list p {
+    color: #777;
+    font-style: italic;
+}
+
+#loadMoreBooks,
+#loadMoreReviews {
+    display: block;
+    margin: 1.5rem auto 0 auto;
+}

@@ -8,6 +8,11 @@ class ProfileView {
 
     userName: 'userName',
     userEmail: 'userEmail',
+    userRole: 'userRole',
+    userFullName: 'userFullName',
+
+    loadMoreBooks: 'loadMoreBooks',
+    loadMoreReviews: 'loadMoreReviews',
   }
 
   mount = async (props) => {

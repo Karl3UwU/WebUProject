@@ -7,6 +7,7 @@ import { RegisterView } from "../app/views/register/register.js"
 import { LoginView } from "../app/views/login/login.js"
 import { BookView } from "../app/views/book/book.js"
 import { CategoriesView } from "../app/views/categories/categories.js"
+import { ProfileView } from "../app/views/profile/profile.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
@@ -26,6 +27,7 @@ const routes = {
   '/login': LoginView,
   '/book': BookView,
   '/categories': CategoriesView,
+  '/profile': ProfileView,
 }
 
 const onRouteChange = async () => {
@@ -42,7 +44,7 @@ const onRouteChange = async () => {
   const ViewComponent = routes[path];
   if (!ViewComponent) {
     console.error('Route not found:', path)
-    return;
+    return
   }
 
   // Unmount and mount to new view
