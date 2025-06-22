@@ -96,3 +96,11 @@
 .book-card:hover {
     transform: translateY(-4px);
 }
+
+.export-icon-btn {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 4px 8px;
+}
+

@@ -172,6 +172,93 @@ document.addEventListener("DOMContentLoaded", () => {
     updatePageTitles(sort);
     loadFilteredBooks(sort);
 });
+document.addEventListener("DOMContentLoaded", () => {
+    const exportBtn = document.getElementById("exportBooksBtn");
+    if (!exportBtn) return;
 
+    exportBtn.addEventListener("click", () => {
+        if (!currentBooks || currentBooks.length === 0) {
+            alert("There are no books to export.");
+            return;
+        }
 
+        const headers = ["Title", "Author", "Genres", "Language", "Pages"];
+        const rows = currentBooks.map(book => [
+            book.title,
+            book.author,
+            book.genres.join(", "),
+            book.language,
+            book.page_count
+        ]);
+
+        exportCSV("filtered_books.csv", headers, rows);
+    });
+
+    function exportCSV(filename, headers, rows) {
+        const csvContent = [headers.join(","), ...rows.map(row =>
+            row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+        )].join("\n");
+
+        const BOM = "\uFEFF"; // UTF-8 BOM to help Excel
+        const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+});
+document.addEventListener("DOMContentLoaded", () => {
+    const exportDocBookBtn = document.getElementById("exportDocBookBtn");
+    if (!exportDocBookBtn) return;
+
+    exportDocBookBtn.addEventListener("click", () => {
+        if (!currentBooks || currentBooks.length === 0) {
+            alert("There are no books to export.");
+            return;
+        }
+
+        exportDocBook("filtered_books.docbook.xml", currentBooks);
+    });
+
+    function exportDocBook(filename, books) {
+        const header = `<?xml version="1.0" encoding="UTF-8"?>
+<book xmlns="http://docbook.org/ns/docbook" version="5.0">
+  <title>Filtered Book List</title>
+  <chapter>
+    <title>Books</title>
+    <itemizedlist>`;
+
+        const items = books.map(book => `
+      <listitem>
+        <para><emphasis>${escapeXml(book.title)}</emphasis> by ${escapeXml(book.author)} (${escapeXml(book.genres.join(", "))}, ${escapeXml(book.language)}) - ${book.page_count} pages</para>
+      </listitem>`).join("");
+
+        const footer = `
+    </itemizedlist>
+  </chapter>
+</book>`;
+
+        const fullXml = header + items + footer;
+
+        const blob = new Blob([fullXml], { type: "application/xml;charset=utf-8;" });
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = filename;
+        link.click();
+    }
+
+    // Basic XML escape function to avoid invalid XML characters
+    function escapeXml(unsafe) {
+        return unsafe.replace(/[<>&'"]/g, function (c) {
+            switch (c) {
+                case '<': return '&lt;';
+                case '>': return '&gt;';
+                case '&': return '&amp;';
+                case '\'': return '&apos;';
+                case '"': return '&quot;';
+            }
+        });
+    }
+});
 
