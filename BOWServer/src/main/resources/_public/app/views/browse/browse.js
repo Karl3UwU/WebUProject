@@ -21,6 +21,9 @@ class BrowseView {
 
     loadMoreButton: 'load-more-btn',
     applyFiltersButton: 'apply-filters-btn',
+
+    exportDocBookBtn: 'exportDocBookBtn',
+    exportBooksBtn: 'exportBooksBtn',
   }
 
   mount = async (props) => {
@@ -30,7 +33,9 @@ class BrowseView {
       history.replaceState(null, '', window.location.pathname)
       this.methods.loadFilteredBooks()}
     )
-    this.elements.loadMoreButton.addEventListener('click', async () => this.methods.renderNextPage())
+    this.elements.loadMoreButton.addEventListener('click', async () => await this.methods.renderNextPage())
+    this.elements.exportDocBookBtn.addEventListener('click', async () => await this.methods.export_doc_book())
+    this.elements.exportBooksBtn.addEventListener('click', async () => await this.methods.export_csv_books())
   }
 
   methods = {
@@ -115,6 +120,75 @@ class BrowseView {
 
       this.currentPage++
       this.elements.loadMoreButton.classList.toggle('hidden', (this.currentPage * this.booksPerPage >= this.books.length))
+    },
+
+    export_doc_book: async () => {
+      const header = `<?xml version="1.0" encoding="UTF-8"?>
+   
+      <book xmlns="http://docbook.org/ns/docbook" version="5.0">
+      <title>Filtered Book List</title>
+      <chapter>
+      <title>Books</title>
+      <itemizedlist>`;
+
+      const itemPromises = this.books.map(async (book) => `
+          <listitem>
+            <para><emphasis>
+            ${await this.methods.escape_xml(book.title)}</emphasis> by 
+            ${await this.methods.escape_xml(book.author)} (
+            ${await this.methods.escape_xml(book.genres.join(", "))}, 
+            ${await this.methods.escape_xml(book.language)}) - 
+            ${book.page_count} pages</para>
+          </listitem>`);
+
+      const items = (await Promise.all(itemPromises)).join("");
+
+      const footer = `
+        </itemizedlist>
+        </chapter>
+        </book>`;
+
+      const fullXml = header + items + footer;
+
+      const blob = new Blob([fullXml], { type: "application/xml;charset=utf-8;" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "filtered_books.docbook.xml";
+      link.click();
+    },
+
+    export_csv_books: async () => {
+      const headers = ["Title", "Author", "Genres", "Language", "Pages"]
+      const rows = this.books.map(book => [
+        book.title,
+        book.author,
+        book.genres.join(", "),
+        book.language,
+        book.page_count
+      ])
+      const csvContent = [headers.join(","), ...rows.map(row =>
+          row.map(cell => `"${String(cell).replace(/"/g, '""')}"`).join(",")
+      )].join("\n")
+
+      const BOM = "\uFEFF"; // UTF-8 BOM to help Excel
+      const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" })
+
+      const link = document.createElement("a")
+      link.href = URL.createObjectURL(blob)
+      link.download = "filtered_books.csv"
+      link.click()
+    },
+
+    escape_xml: async (unsafe) => {
+      return unsafe.replace(/[<>&'"]/g, function (c) {
+        switch (c) {
+          case '<': return '&lt;';
+          case '>': return '&gt;';
+          case '&': return '&amp;';
+          case '\'': return '&apos;';
+          case '"': return '&quot;';
+        }
+      });
     },
 
     route_to: async (href) => {

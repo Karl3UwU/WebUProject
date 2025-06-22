@@ -352,4 +352,26 @@ public class BrowseService {
             return false;
         }
     }
+
+    public boolean isInBookshelf(int bookId, String email) {
+        String sql = """
+        SELECT COUNT(*) FROM bookshelf
+        WHERE user_id = (SELECT id FROM users WHERE email = ?)
+        AND book_id = ?
+        """;
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, email);
+            stmt.setInt(2, bookId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0; // Return true if count is greater than 0
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();}
+        return false; // Return false if an error occurs or no records found
+    }
 }
