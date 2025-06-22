@@ -64,9 +64,15 @@ class DashboardView {
           <button class="btn btn-secondary" data-id="${suggestion.title}&${suggestion.author}">Review</button>
         `;
         card.querySelector("button").addEventListener("click", async () => {
-          const encodedTitle = encodeURIComponent(suggestion.title)
-          const encodedAuthor = encodeURIComponent(suggestion.author)
-          await this.methods.route_to(`dashboard-suggestions?title=${encodedTitle}&author=${encodedAuthor}`)
+          const suggestion_json = {
+            'title': suggestion.title,
+            'author': suggestion.author,
+            'language': suggestion.language,
+            'page_count': suggestion.page_count,
+            'genres': suggestion.genres
+          }
+          sessionStorage.setItem('suggestion', JSON.stringify(suggestion_json))
+          await this.methods.route_to(`dashboard-suggestions`)
         })
         this.elements.suggestionList.appendChild(card)
       }
