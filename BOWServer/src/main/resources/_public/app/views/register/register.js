@@ -20,8 +20,6 @@ class RegisterView {
     email: 'email',
     password: 'password',
     confirmPassword: 'confirmPassword',
-
-    test_modal: 'test-modal',
   }
 
   mount = async (props) => {

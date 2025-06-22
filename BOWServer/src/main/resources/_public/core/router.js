@@ -13,6 +13,9 @@ import { ShuffleView } from "../app/views/shuffle/shuffle.js"
 import { ReviewsView } from "../app/views/reviews/reviews.js"
 import { SubmissionsView } from "../app/views/submissions/submissions.js"
 import { DashboardView } from "../app/views/dashboard/dashboard.js"
+import { TermsView } from "../app/views/terms/terms.js"
+import { PrivacyView } from "../app/views/privacy/privacy.js"
+import { HelpView } from "../app/views/help/help.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
@@ -39,6 +42,9 @@ const routes = {
   '/submissions': SubmissionsView,
   '/dashboard': DashboardView,
   '/dashboard-suggestions': DashboardSuggestionsView,
+  '/terms': TermsView,
+  '/privacy': PrivacyView,
+  '/help': HelpView,
 }
 
 const onRouteChange = async () => {
