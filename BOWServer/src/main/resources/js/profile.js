@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     const loadMoreReviews = document.getElementById("loadMoreReviews");
     const loadMoreBooks = document.getElementById("loadMoreBooks");
     const changePasswordBtn = document.getElementById("changePasswordBtn");
-    const dashboardContainer = document.getElementById("dashboardContainer"); // <--- make sure you have a div with this id
 
     let reviewPage = 0;
     let booksPage = 0;
@@ -91,24 +90,26 @@ document.addEventListener("DOMContentLoaded", async () => {
             .then(response => response.json())
             .then(data => {
                 const userReviews = data.filter(review => review.username === username);
+                const paginatedReviews = userReviews.slice(reviewPage * pageSize, (reviewPage + 1) * pageSize);
+
                 if (userReviews.length === 0 && reviewPage === 0) {
                     reviewsContainer.innerHTML = "<p>You haven't posted any reviews yet.</p>";
                     loadMoreReviews.style.display = "none";
                     return;
                 }
 
-                for (const review of userReviews) {
+                for (const review of paginatedReviews) {
                     const reviewDiv = document.createElement("div");
                     reviewDiv.className = "review-card";
                     reviewDiv.style.position = "relative";
                     reviewDiv.innerHTML = `
-                        <button class="btn btn-secondary delete-review-btn" data-id="${review.bookId}" style="position:absolute;top:8px;right:8px;padding:4px 8px;">
-                            <img src="images/trash.svg" alt="Delete" style="width:16px;height:16px;vertical-align:middle;">
-                        </button>
-                        <h3>${review.bookTitle}</h3>
-                        <p><strong>Rating:</strong> ${review.rating}/10</p>
-                        <p>${review.content}</p>
-                    `;
+                    <button class="btn btn-secondary delete-review-btn" data-id="${review.bookId}" style="position:absolute;top:8px;right:8px;padding:4px 8px;">
+                        <img src="images/trash.svg" alt="Delete" style="width:16px;height:16px;vertical-align:middle;">
+                    </button>
+                    <h3>${review.bookTitle}</h3>
+                    <p><strong>Rating:</strong> ${review.rating}/10</p>
+                    <p>${review.content}</p>
+                `;
 
                     reviewDiv.querySelector(".delete-review-btn").addEventListener("click", () => {
                         if (confirm("Are you sure you want to delete this review?")) {
@@ -130,11 +131,12 @@ document.addEventListener("DOMContentLoaded", async () => {
                     reviewsContainer.appendChild(reviewDiv);
                 }
 
-                loadMoreReviews.style.display = (userReviews.length === pageSize) ? "block" : "none";
                 reviewPage++;
+                loadMoreReviews.style.display = ((reviewPage * pageSize) < userReviews.length) ? "block" : "none";
             })
             .catch(error => console.error("Error loading reviews:", error));
     }
+
 
     function loadBooks() {
         fetch("/api/auth/getBookshelf", {
