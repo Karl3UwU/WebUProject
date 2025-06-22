@@ -19,10 +19,28 @@
     <!-- Browse Section -->
     <section class="browse-section">
         <div class="container">
-            <div class="section-header">
-                <h1 id="browseTitle">Browse Books</h1>
-                <p id="browseSubtitle">Explore our collection</p>
+            <div class="section-header enhanced-header" style="position: relative;">
+                <div class="text-center-group">
+                    <h1 id="browseTitle">Browse Books</h1>
+                    <p id="browseSubtitle">Explore our collection</p>
+                </div>
+                <button class="btn btn-secondary" id="exportDocBookBtn"
+                        title="Export as DocBook"
+                        style="position:absolute; top:8px; right:48px; padding:4px 8px;">
+                    <img src="images/docbook.svg" alt="Export DocBook" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+
+                <button class="btn btn-secondary" id="exportBooksBtn"
+                        title="Export as CSV"
+                        style="position:absolute; top:8px; right:8px; padding:4px 8px;">
+                    <img src="images/download.svg" alt="Export Books" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+
+
             </div>
+
+
+
 
             <div class="browse-layout">
                 <!-- Filter Sidebar -->
