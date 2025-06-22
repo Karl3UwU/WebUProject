@@ -17,15 +17,31 @@
 
     <section class="profile-sections">
         <div class="card">
-            <h2>My Bookshelf</h2>
+            <div style="position:relative;">
+                <h2>My Bookshelf</h2>
+                <button class="btn btn-secondary" id="exportBooksBtn"
+                        title="Export Bookshelf"
+                        style="position:absolute; top:0; right:0; padding:4px 8px;">
+                    <img src="resource/app/assets/download.svg" alt="Export Books" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+            </div>
             <div class="book-list" id="userBooks"></div>
-            <button class="btn btn-primary hidden" id="loadMoreBooks">Load More</button>
+            <button class="btn btn-primary" id="loadMoreBooks" style="display: none;">Load More</button>
         </div>
 
+
         <div class="card">
-            <h2>My Reviews</h2>
+            <div style="position:relative;">
+                <h2>My Reviews</h2>
+                <button class="btn btn-secondary" id="exportReviewsBtn"
+                        title="Export Reviews"
+                        style="position:absolute; top:0; right:0; padding:4px 8px;">
+                    <img src="resource/app/assets/download.svg" alt="Export Reviews" style="width:16px;height:16px;vertical-align:middle;">
+                </button>
+            </div>
             <div class="review-list" id="userReviews"></div>
-            <button class="btn btn-primary hidden" id="loadMoreReviews">Load More</button>
+            <button class="btn btn-primary" id="loadMoreReviews" style="display: none;">Load More</button>
         </div>
+
     </section>
 </main>

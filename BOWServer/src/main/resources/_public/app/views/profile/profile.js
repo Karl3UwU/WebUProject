@@ -23,6 +23,8 @@ class ProfileView {
 
     changePasswordBtn: 'changePasswordBtn',
     dashboardBtn: 'dashboardBtn',
+    exportBooksBtn: 'exportBooksBtn',
+    exportReviewsBtn: 'exportReviewsBtn',
   }
 
   mount = async (props) => {
@@ -30,6 +32,8 @@ class ProfileView {
     this.elements.loadMoreBooks.addEventListener('click', async () => await this.methods.load_books())
     this.elements.loadMoreReviews.addEventListener('click', async () => await this.methods.load_reviews())
     this.elements.dashboardBtn.addEventListener('click', async () => await this.methods.route_to('/dashboard'))
+    this.elements.exportBooksBtn.addEventListener('click', async () => await this.methods.export_books())
+    this.elements.exportReviewsBtn.addEventListener('click', async () => await this.methods.export_reviews())
 
     await this.methods.load_user()
 
@@ -231,6 +235,47 @@ class ProfileView {
     set_admin_dashboard_visibility: async () => {
       this.elements.dashboardBtn.classList.toggle('hidden', !this.admin_button_visible)
     },
+
+    export_books: async () => {
+      const token = localStorage.getItem("authToken");
+      const res = await fetch("/api/auth/getBookshelf", {
+        headers: { "Authorization": token }
+      });
+      const books = await res.json();
+      const headers = ["Title", "Author", "Status"];
+      const rows = books.map(book => [book.title, book.author, book.Status]);
+      await this.methods.export_csv("bookshelf.csv", headers, rows);
+    },
+
+    export_reviews: async () => {
+      const token = localStorage.getItem("authToken");
+      const res = await fetch("api/auth/getReviews", {
+        headers: { "Authorization": token }
+      });
+      const allReviews = await res.json();
+
+      const username = this.elements.userName.textContent;
+      const userReviews = allReviews.filter(r => r.username === username);
+
+      const headers = ["Book Title", "Rating", "Content"];
+      const rows = userReviews.map(r => [r.bookTitle, r.rating.toString(), r.content]);
+      await this.methods.export_csv("reviews.csv", headers, rows);
+    },
+
+    export_csv : async (filename, headers, rows) => {
+      const csvContent = [headers.join(","), ...rows.map(row =>
+          row.map(cell => `"${cell.replace(/"/g, '""')}"`).join(",")
+      )].join("\n");
+
+      const BOM = "\uFEFF"; // UTF-8 BOM
+      const blob = new Blob([BOM + csvContent], { type: "text/csv;charset=utf-8;" });
+
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = filename;
+      link.click();
+    },
+
 
     route_to: async (href) => {
       const link = document.createElement('a')

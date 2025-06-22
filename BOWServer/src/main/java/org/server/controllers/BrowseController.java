@@ -203,7 +203,7 @@ public class BrowseController {
             return ResponseEntity.ok()
                     .contentType("application/json")
                     .body(suggestions);
-            
+
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
@@ -215,8 +215,6 @@ public class BrowseController {
             @RequestParam(value = "title") String title,
             @RequestParam(value = "author") String author) {
         try {
-            System.out.println("Received title: " + title);
-            System.out.println("Received author: " + author);
             if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
                 return ResponseEntity.status(400)
                         .contentType("application/json")
