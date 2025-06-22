@@ -1,7 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book Details</title>
+</head>
+<body>
 <main id="book-view" class="book-details-container">
     <section class="book-overview">
-        <img id="bookCover" alt="Book Cover" class="book-cover"/>
-        <main class="book-details-container">
+        <img id="bookCover" src="resource/app/assets/default-cover.svg" alt="Book Cover" class="book-cover" />
+        <div class="book-details-container">
             <div class="book-info">
                 <h1 id="bookTitle"></h1>
                 <p><strong>Author:</strong> <span id="bookAuthor"></span></p>
@@ -15,8 +23,7 @@
                 <button class="btn-group btn-primary" id="findBookButton">Find this book</button>
                 <button class="btn-review btn-primary" id="writeReviewBtn">Write a Review</button>
             </div>
-
-        </main>
+        </div>
     </section>
 
     <section class="book-reviews">
@@ -24,3 +31,5 @@
         <div id="reviewsList"></div>
     </section>
 </main>
+</body>
+</html>
