@@ -1,5 +1,7 @@
 Demo video for the project: https://youtu.be/CeJteLBtjaA
+
 Also, documentation (C3 & C4 diagrams) are in the file projects.
+
 Books of Web
 Books of Web is a community-driven web application for discovering, reviewing, and sharing books. It features user authentication, book browsing and filtering, reviews, personal bookshelves, and an admin dashboard for managing book suggestions.
 
