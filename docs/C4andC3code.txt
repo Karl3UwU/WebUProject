@@ -1,0 +1,62 @@
+C4 diagram:
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+'Title
+LAYOUT_WITH_LEGEND()
+title C4 - Books of Web (Context & Container Views)
+
+Person(user, "User", "A reader or reviewer using Books of Web")
+Person(admin, "Admin", "Administrator managing content")
+
+System(booksWeb, "Books of Web", "Web platform for discovering, reviewing, and sharing books")
+
+System_Ext(oracleDB, "Oracle Database", "Stores books, users, reviews, etc.")
+System_Ext(emailService, "Email Service", "Handles confirmation, notifications")
+
+Rel(user, booksWeb, "Uses")
+Rel(admin, booksWeb, "Manages via dashboard")
+Rel(booksWeb, oracleDB, "Reads/writes data", "JDBC/SQL")
+Rel(booksWeb, emailService, "Sends emails", "SMTP")
+
+@enduml
+
+
+
+
+C3 diagram:
+@startuml
+!includeurl https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+title C4 - Books of Web (Container View)
+
+' People
+Person(user, "User")
+Person(admin, "Admin")
+
+' System boundary
+System_Boundary(c1, "Books of Web") {
+    Container(webApp, "Web UI", "HTML/CSS/JS", "Displays UI in browser, makes API calls")
+    Container(apiServer, "Java Backend", "Java 24 + Maven", "Exposes REST APIs, handles auth, logic, file export")
+    Container(database, "PostgreSQL DB", "SQL", "Stores books, users, reviews, etc.")
+    Container(fileExporter, "Export Service", "Java (CSV/XML Writer)", "Exports bookshelf/reviews as CSV or DocBook XML")
+    Container(emailProcessor, "Internal Email Service", "Java Module", "Composes and queues emails before sending via SMTP")
+}
+
+' External systems
+System_Ext(emailService, "Email Service", "External SMTP provider for sending notifications and confirmations")
+
+' Relationships
+Rel(user, webApp, "Uses via browser")
+Rel(admin, webApp, "Uses Admin Dashboard")
+
+Rel(webApp, apiServer, "Sends API requests", "HTTP/REST + JWT")
+Rel(apiServer, database, "Reads/writes data", "JDBC")
+Rel(apiServer, fileExporter, "Triggers export", "Internal call")
+Rel(apiServer, emailProcessor, "Delegates email tasks to")
+Rel(emailProcessor, emailService, "Sends email via SMTP")
+Rel(apiServer, webApp, "Returns responses", "HTML/JSON")
+
+@enduml
+

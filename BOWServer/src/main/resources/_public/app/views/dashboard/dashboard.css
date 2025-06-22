@@ -1,0 +1,125 @@
+/* Suggestions Container */
+.suggestions-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.75rem;
+    padding: 2rem 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Individual Suggestion Card */
+.suggestion-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 1.5rem 2rem;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid rgba(102, 126, 234, 0.15);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 180px;
+}
+
+.suggestion-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 40px rgba(102, 126, 234, 0.25);
+}
+
+.suggestion-card h3 {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 0.5rem;
+    user-select: none;
+}
+
+.suggestion-card p {
+    font-size: 1rem;
+    color: #555;
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    user-select: none;
+}
+
+/* Button inside card */
+.suggestion-card button.btn-secondary {
+    align-self: flex-start;
+    padding: 0.5rem 1.3rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 25px;
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.suggestion-card button.btn-secondary:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+/* No suggestions message */
+.suggestions-container p {
+    font-size: 1.2rem;
+    color: #aaa;
+    text-align: center;
+    padding: 2rem;
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+    .suggestions-container {
+        grid-template-columns: 1fr;
+        padding: 1rem;
+    }
+
+    .suggestion-card {
+        padding: 1.25rem 1.5rem;
+        min-height: auto;
+    }
+}
+h1,.book-suggestions-title {
+    text-align: center;
+    font-size: 2rem;      /* adjust size as needed */
+    font-weight: 800;     /* keep it bold like your headers */
+    color: #333;          /* or white if on dark background */
+    margin-bottom: 1.5rem;
+    user-select: none;
+}
+.suggestion-card-content {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+#loadMoreSuggestionsBtn {
+    display: inline-flex;
+    margin: 2rem auto 0 auto;
+    padding: 0.6rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 25px;
+    border: 2px solid #667eea;
+    color: #667eea;
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    justify-content: center;
+}
+
+#loadMoreSuggestionsBtn:hover {
+    background: #667eea;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.hidden {
+    display: none !important;
+}

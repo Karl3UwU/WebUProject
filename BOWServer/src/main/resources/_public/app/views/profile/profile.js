@@ -29,6 +29,7 @@ class ProfileView {
     this.elements.changePasswordBtn.addEventListener('click', async () => await this.methods.change_password())
     this.elements.loadMoreBooks.addEventListener('click', async () => await this.methods.load_books())
     this.elements.loadMoreReviews.addEventListener('click', async () => await this.methods.load_reviews())
+    this.elements.dashboardBtn.addEventListener('click', async () => await this.methods.route_to('/dashboard'))
 
     await this.methods.load_user()
 
@@ -122,10 +123,10 @@ class ProfileView {
           alert('Successfully updated book status')
         })
 
-        bookDiv.querySelector(".delete-book-btn").addEventListener("click", () => {
+        bookDiv.querySelector(".delete-book-btn").addEventListener("click", async () => {
           if (!confirm("Are you sure you want to remove this book from your shelf?")) return
 
-          const delete_response = awaitfetch(`/api/auth/deleteBookFromShelf?bookId=${book.bookId}`, {
+          const delete_response = await fetch(`/api/auth/deleteBookFromShelf?bookId=${book.bookId}`, {
             method: "GET",
             headers: { "Authorization": token }
           })

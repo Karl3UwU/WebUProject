@@ -1,0 +1,89 @@
+.shuffle-section {
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.shuffle-controls {
+    margin-top: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.shuffle-controls select,
+.shuffle-controls button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+}
+
+.book-result {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+}
+
+.book-card {
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 1rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease;
+
+    display: flex;
+    gap: 20px;
+    max-width: 700px;
+    width: 100%;
+    align-items: center;
+}
+
+.book-card:hover {
+    transform: scale(1.03);
+}
+
+.book-card img {
+    max-width: 200px;
+    max-height: 600px;
+    height: min-content;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.book-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.book-info h3 {
+    margin: 0 0 6px 0;
+    font-size: 1.4em;
+}
+
+.book-info p.author {
+    margin: 0 0 12px 0;
+    font-style: italic;
+    color: #555;
+}
+
+.book-info p.description {
+    font-size: 1em;
+    line-height: 1.4;
+    color: #333;
+}
+
+.add-to-site p{
+    margin-bottom: 1rem;
+}
+
+.hidden {
+    display: none !important;
+}

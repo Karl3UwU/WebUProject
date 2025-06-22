@@ -96,7 +96,7 @@ const unmountAndMount = async (parent, ViewComponent, props) => {
     parent.removeAttribute('data-component-id')
 
     // Remove associated CSS
-    const styleTag = document.querySelector(`style[data-style-id="${instance.container}"]`)
+    const styleTag = document.querySelector(`style[data-style-id="${parent_instance.container}"]`)
     if (styleTag) styleTag.remove()
 
     // Cleanup reference

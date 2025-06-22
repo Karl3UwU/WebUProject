@@ -1,0 +1,40 @@
+<main id="reviews-view">
+    <section class="browse-section">
+        <div class="container">
+            <div class="section-header">
+                <h1 id="reviewsTitle">Book Reviews</h1>
+                <p id="reviewsSubtitle">Read what others are saying</p>
+            </div>
+
+            <div class="browse-layout">
+                <!-- Filter Sidebar -->
+                <aside class="filters-sidebar">
+                    <h3>Filter Reviews</h3>
+
+                    <div class="filter-group">
+                        <label for="bookTitle">Book Title</label>
+                        <input type="text" id="bookTitle" placeholder="Search by book name" />
+                    </div>
+
+                    <div class="filter-group">
+                        <label for="reviewerName">Reviewer</label>
+                        <input type="text" id="reviewerName" placeholder="Search by reviewer name" />
+                    </div>
+
+                    <button class="btn btn-primary" id="applyReviewFilters">Apply Filters</button>
+                </aside>
+
+                <!-- Main review content -->
+                <div class="reviews-main">
+                    <div class="reviews-list" id="reviewsList"></div>
+                    <div class="load-more-container">
+                        <button class="btn btn-secondary hidden" id="loadMoreReviewsBtn">
+                            <img src="resource/app/assets/loader.svg" alt="Load More" class="icon">
+                            Load More Reviews
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>

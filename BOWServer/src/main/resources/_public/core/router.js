@@ -9,6 +9,10 @@ import { BookView } from "../app/views/book/book.js"
 import { CategoriesView } from "../app/views/categories/categories.js"
 import { ProfileView } from "../app/views/profile/profile.js"
 import { AccessibilityView } from "../app/views/accessibility/accessibility.js"
+import { ShuffleView } from "../app/views/shuffle/shuffle.js"
+import { ReviewsView } from "../app/views/reviews/reviews.js"
+import { SubmissionsView } from "../app/views/submissions/submissions.js"
+import { DashboardView } from "../app/views/dashboard/dashboard.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
@@ -20,7 +24,6 @@ const router_element = document.getElementById('views-router')
 let current_route = ''
 
 const routes = {
-  '/': HomeView,
   '/home': HomeView,
   '/browse': BrowseView,
   '/contact-us': ContactView,
@@ -30,22 +33,27 @@ const routes = {
   '/categories': CategoriesView,
   '/profile': ProfileView,
   '/accessibility': AccessibilityView,
+  '/shuffle': ShuffleView,
+  '/reviews': ReviewsView,
+  '/submissions': SubmissionsView,
+  '/dashboard': DashboardView
 }
 
 const onRouteChange = async () => {
   let path = window.location.pathname;
   console.log(`Changing route from ${current_route} to ${path}`)
-  if(current_route === path) return
+  if (current_route === path) return
 
   // Redirect '/' to '/home' internally (no reload)
   if (path === '/') {
-    history.replaceState(null, '', '/home')
-    path = '/home'
+    await route_to('/home')
+    return
   }
 
   const ViewComponent = routes[path];
   if (!ViewComponent) {
     console.error('Route not found:', path)
+    await route_to('/home')
     return
   }
 
@@ -82,3 +90,15 @@ window.addEventListener('DOMContentLoaded', async () => {
   mountView(footer_element, FooterComponent)
   onRouteChange()
 })
+
+const route_to = async (href) => {
+  const link = document.createElement('a')
+  link.href = href
+  link.style.display = 'none'
+  document.body.appendChild(link)
+
+  const event = new MouseEvent('click', { bubbles: true, cancelable: true, view: window })
+  link.dispatchEvent(event)
+
+  document.body.removeChild(link)
+}
