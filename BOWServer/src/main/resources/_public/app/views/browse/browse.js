@@ -78,7 +78,6 @@ class BrowseView {
       this.renderedBooksCount = 0
 
       const books = await response.json()
-      console.log(books)
       this.books = books
 
       window.scrollTo({ top: 0, behavior: "smooth" })

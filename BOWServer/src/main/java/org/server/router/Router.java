@@ -205,7 +205,7 @@ public class Router {
             // Go to index by default if not internal resource request
             path = "/index.html";
         } else {
-            path = path.substring("/resource".length());
+            path = path.substring("/resource/".length());
             if (path.isEmpty()) {
                 path = "/index.html"; // fallback
             }
