@@ -8,6 +8,7 @@ import { LoginView } from "../app/views/login/login.js"
 import { BookView } from "../app/views/book/book.js"
 import { CategoriesView } from "../app/views/categories/categories.js"
 import { ProfileView } from "../app/views/profile/profile.js"
+import { AccessibilityView } from "../app/views/accessibility/accessibility.js"
 
 import { HeaderComponent } from "../app/components/header/header.js"
 import { FooterComponent } from "../app/components/footer/footer.js"
@@ -28,6 +29,7 @@ const routes = {
   '/book': BookView,
   '/categories': CategoriesView,
   '/profile': ProfileView,
+  '/accessibility': AccessibilityView,
 }
 
 const onRouteChange = async () => {
