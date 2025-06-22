@@ -13,12 +13,12 @@
 
     <!-- Search Bar -->
     <div class="search-container">
-      <div class="search-wrapper">
+      <form class="search-wrapper" id="searchForm">
         <input type="text" class="search-input" placeholder="Search for books, authors, or genres..." id="searchInput">
-        <button class="search-btn" id="searchBtn">
+        <button class="search-btn" type="submit">
           <img src="resource/app/assets/search.svg" alt="Search" class="icon">
         </button>
-      </div>
+      </form>
     </div>
   </section>
 
@@ -35,7 +35,7 @@
       </div>
 
       <div class="load-more-container">
-        <button class="btn btn-secondary" id="loadMoreBtn">
+        <button class="btn btn-secondary hidden" id="loadMoreBtn">
           <img src="resource/app/assets/loader.svg" alt="Load More" class="icon">
           Load More Articles
         </button>

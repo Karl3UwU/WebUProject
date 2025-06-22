@@ -41,7 +41,12 @@ class BrowseView {
   methods = {
     loadFilteredBooks: async () => {
       const params = new URLSearchParams(window.location.search)
-      const param_genre = params.get("selectedGenre")
+      const param_title = sessionStorage.getItem('search_title')
+      const param_genre = params.get('selectedGenre')
+      if(param_title) {
+        this.elements.title_field.value = param_title
+        sessionStorage.removeItem('search_title')
+      }
       if(param_genre) this.elements.genre_field.value = param_genre
 
       const title = this.elements.title_field.value.trim()
