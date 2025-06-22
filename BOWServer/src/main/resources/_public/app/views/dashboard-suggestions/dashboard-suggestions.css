@@ -1,0 +1,102 @@
+#submissionForm .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    padding: 30px;
+}
+
+#submissionForm button.btn-primary {
+    width: auto; /* prevent full width */
+    padding: 0.6rem 1.5rem;
+}
+
+.delete-review-btn {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border-radius: 50%;
+    border: none;
+    background-color: #f0f0f0;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    text-decoration: none;
+    /* remove absolute positioning */
+}
+
+#submissionForm .form-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+    /* no position: relative needed here if not using absolute children */
+}
+
+
+.delete-review-btn:hover {
+    background-color: #e0e0e0; /* subtle hover effect */
+}
+
+.delete-review-btn img {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    pointer-events: none; /* so click is on the button */
+}
+
+.auth-container {
+    position: relative; /* To anchor absolute children */
+}
+
+.auth-container {
+    position: relative; /* Anchor for absolute buttons */
+}
+
+/* Delete button - small circle bottom-left */
+#deleteSuggestionBtn {
+    position: absolute;
+    bottom: 12px;
+    left: 12px;
+
+    width: 32px;      /* small circle */
+    height: 32px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: #f0f0f0; /* light background */
+    border: none;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: background-color 0.2s ease;
+}
+
+#deleteSuggestionBtn:hover {
+    background-color: #e0e0e0;
+}
+
+#deleteSuggestionBtn img {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+    vertical-align: middle;
+}
+
+/* Form footer container - relative positioning to allow absolute positioning */
+.auth-form .form-footer {
+    position: relative;
+    padding: 1rem 0;
+}
+
+/* Submit button bottom-right */
+.auth-form .btn-primary {
+    position: absolute;
+    bottom: 12px;
+    right: 12px;
+    padding: 0.6rem 1.5rem;
+    width: auto;
+}
+

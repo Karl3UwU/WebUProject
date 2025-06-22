@@ -22,7 +22,13 @@ class DashboardView {
 
   methods = {
     get_all_suggestions: async () => {
-      const response = await fetch('/api/books/getAllSuggestions')
+      const token = localStorage.getItem("authToken")
+      const response = await fetch('/api/books/getAllSuggestions', {
+        method: 'GET',
+        headers: {
+          'Authorization': token
+        }
+      })
       if (!response.ok) {
         console.error('Failed to get suggestions')
         return

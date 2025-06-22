@@ -186,8 +186,9 @@ public class BrowseController {
     ) {
         try {
             //check if the user's role is admin
-            UserInfoDTO userInfo = AuthService.getUserDataByEmail(authToken);
-            if( userInfo == null) {
+            String email = SessionManager.getUserEmailFromToken(authToken);
+            UserInfoDTO userInfo = AuthService.getUserDataByEmail(email);
+            if(userInfo == null) {
                 return ResponseEntity.status(401)
                         .contentType("application/json")
                         .body(null);
@@ -198,17 +199,11 @@ public class BrowseController {
                         .body(null);
             }
 
-            if (userInfo == null || !userInfo.getRole().equals("admin")) {
-                return ResponseEntity.status(403)
-                        .contentType("application/json")
-                        .body(null);
-            }
-
-
             List<BookDTO> suggestions = BrowseService.getAllSuggestions();
             return ResponseEntity.ok()
                     .contentType("application/json")
                     .body(suggestions);
+            
         } catch (Exception e) {
             e.printStackTrace();
             return ResponseEntity.status(500).body(null);
