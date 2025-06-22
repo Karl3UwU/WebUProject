@@ -11,7 +11,7 @@ const mountView = async (parent, ViewComponent, props) => {
   if(instance.style) {
     const css_style = await fetchResource(instance.style)
     if (!css_style) {
-      console.error('Failed to load component CSS:', component)
+      console.error('Failed to load component CSS:', ViewComponent)
       return
     }
 
@@ -75,7 +75,7 @@ const unmountAndMount = async (parent, ViewComponent, props) => {
   if(instance.style) {
     css_style = await fetchResource(instance.style)
     if (!css_style) {
-      console.error('Failed to load component CSS:', component)
+      console.error('Failed to load component CSS:', ViewComponent)
       return
     }
   }
@@ -84,7 +84,7 @@ const unmountAndMount = async (parent, ViewComponent, props) => {
   if(instance.template) {
     html_template = await fetchResource(instance.template)
     if(!html_template) {
-      console.error('Failed to load component html', component)
+      console.error('Failed to load component html', ViewComponent)
       return
     }
   }
