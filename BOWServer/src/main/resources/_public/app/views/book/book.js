@@ -3,7 +3,7 @@ class BookView {
   template = '/app/views/book/book.html'
   style = '/app/views/book/book.css'
 
-  book_data = undefined
+  book = undefined
 
   elements = {
     bookCover: 'bookCover',
@@ -15,18 +15,18 @@ class BookView {
     bookRating: 'bookRating',
 
     addToProfileBtn: 'addToProfileBtn',
-    addToGroupBtn: 'addToGroupBtn',
+    findBookButton: 'findBookButton',
     writeReviewBtn: 'writeReviewBtn',
 
     reviewsList: 'reviewsList',
   }
 
   mount = async (props) => {
-    this.elements.addToProfileBtn.addEventListener('clicl', async () => {})
-    this.elements.addToGroupBtn.addEventListener('clicl', async () => {})
-    this.elements.writeReviewBtn.addEventListener('clicl', async () => {})
+    this.elements.addToProfileBtn.addEventListener('click', async () => await this.methods.addToBookshelf())
+    this.elements.findBookButton.addEventListener('click', async () => await this.methods.findBook())
+    this.elements.writeReviewBtn.addEventListener('click', async () => await this.methods.writeReview())
 
-    this.methods.load_book()
+    await this.methods.load_book()
   }
 
   methods = {
@@ -43,8 +43,10 @@ class BookView {
       }
 
       this.book = (await result.json())[0]
-      this.methods.render_book_info()
-      this.methods.load_reviews(this.book.title)
+      await this.methods.render_book_info()
+      await this.methods.load_reviews(this.book.title)
+      await this.methods.checkBookInBookshelf();
+
     },
 
     render_book_info: async () => {
@@ -98,12 +100,191 @@ class BookView {
       return "★".repeat(Math.round(rating)) + "☆".repeat(10 - Math.round(rating));
     },
 
+    writeReview : async () => {
+      if (await this.methods.isUserLoggedIn()) {
+        const token = localStorage.getItem("authToken");
+
+        try {
+          const userRes = await fetch("/api/auth/getUser", {
+            method: "GET",
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          });
+
+          if (!userRes.ok) throw new Error("User fetch failed");
+
+          const user = await userRes.json();
+          const email = user.email;
+
+          const rating = prompt("Enter your rating (0-10):");
+          if (!rating || isNaN(rating) || rating < 0 || rating > 10) {
+            alert("Please enter a valid rating between 0 and 10.");
+            return;
+          }
+
+          const reviewText = prompt("Write your review:");
+          if (!reviewText || reviewText.trim() === "") {
+            alert("Review text cannot be empty.");
+            return;
+          }
+
+          const response = await fetch(
+              `/api/books/writeReview?bookId=${this.book.id}&email=${encodeURIComponent(email)}&rating=${rating}&review=${encodeURIComponent(reviewText)}`,
+              {
+                method: "GET",
+                headers: {
+                  "Authorization": token,
+                  "Content-Type": "application/json"
+                }
+              }
+          );
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("Review submitted successfully!");
+            this.methods.load_book();
+          } else {
+            console.error("Review submission failed:", data.error);
+            alert("Failed to submit review.");
+          }
+
+        } catch (err) {
+          console.error("Error writing review:", err);
+          alert("An error occurred while submitting your review.");
+        }
+
+      } else {
+        this.methods.route_to("login");
+      }
+    },
+
     isUserLoggedIn: async () => {
-      // TODO: Replace this logic with your actual auth check
-      // Example: return Boolean(sessionStorage.getItem("userToken"));
-      // Or call /api/auth/status and cache the result
-      return false; // Simulating a not-logged-in user
+      const token = localStorage.getItem("authToken");
+      if (!token) return false;
+
+      try {
+        const res = await fetch("/api/auth/verify-token", {
+          method: "GET",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!res.ok) return false;
+
+        const isValid = await res.json();
+        return isValid === true;
+      } catch (error) {
+        console.error("Token verification failed:", error);
+        return false;
+      }
+    },
+
+    addToBookshelf: async () => {
+      if (await this.methods.isUserLoggedIn()) {
+        const token = localStorage.getItem("authToken");
+        try {
+          const userRes = await fetch("/api/auth/getUser", {
+            method: "GET",
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          });
+
+          if (!userRes.ok) throw new Error("User fetch failed");
+
+          const user = await userRes.json();
+          console.log("Current user:", user);
+          const email = user.email;
+
+          const response = await fetch(`/api/books/addToBookshelf?bookId=${this.book.id}&email=${email}`, {
+            method: "GET",
+            headers: {
+              "Authorization": token,
+              "Content-Type": "application/json"
+            }
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            alert("Book successfully added to your profile!");
+            this.methods.load_book();
+          } else {
+            console.error("Add to bookshelf failed:", data.error);
+            alert("Failed to add book to profile.");
+          }
+        } catch (err) {
+          console.error("Error adding to profile:", err);
+          alert("Error while adding book to profile.");
+        }
+      } else {
+        this.methods.route_to("login");
+      }
+    },
+
+    findBook: async () => {
+      if (!this.book) return;
+        const query = `${this.book.title} ${this.book.author}`;
+        window.open(`https://www.worldcat.org/search?q=${encodeURIComponent(query)}`, "_blank");
+    },
+
+    route_to: async (href) => {
+      const link = document.createElement('a')
+      link.href = href
+      link.style.display = 'none'
+      document.body.appendChild(link)
+
+      const event = new MouseEvent('click', { bubbles: true, cancelable: true, view: window })
+      link.dispatchEvent(event)
+
+      document.body.removeChild(link)
+    },
+
+    checkBookInBookshelf: async () => {
+      if (!(await this.methods.isUserLoggedIn())) {
+        return;
+      }
+
+      const token = localStorage.getItem("authToken");
+      try {
+        const userRes = await fetch("/api/auth/getUser", {
+          method: "GET",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!userRes.ok) throw new Error("Failed to fetch user");
+
+
+        const checkRes = await fetch(`/api/books/isInBookshelf?bookId=${this.book.id}`, {
+          method: "GET",
+          headers: {
+            "Authorization": token,
+            "Content-Type": "application/json"
+          }
+        });
+
+        if (!checkRes.ok) throw new Error("Failed to check bookshelf");
+
+        const isInBookshelf = await checkRes.json();
+
+        if (isInBookshelf === true) {
+          this.elements.addToProfileBtn.disabled = true;
+          this.elements.addToProfileBtn.textContent = "Already in Bookshelf";
+        }
+      } catch (err) {
+        console.error("Error checking bookshelf:", err);
+      }
     }
+
   }
 }
 

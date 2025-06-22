@@ -290,4 +290,20 @@ public class BrowseController {
         }
     }
 
+    @GetMapping("/isInBookshelf")
+    public ResponseEntity<Boolean> isInBookshelf(
+            @RequestParam(value = "bookId") String bookId,
+            @RequestHeader("Authorization") String authToken) {
+        try {
+            int _bookId = Integer.parseInt(bookId);
+            String email = SessionManager.getUserEmailFromToken(authToken);
+            boolean isInBookshelf = BrowseService.isInBookshelf(_bookId, email);
+            return ResponseEntity.ok()
+                    .contentType("application/json")
+                    .body(isInBookshelf);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(500).body(null);
+        }
+    }
 }
