@@ -2,11 +2,15 @@ package org.server.controllers;
 
 import org.server.dto.BookDTO;
 import org.server.dto.BookFilterDTO;
+import org.server.dto.UserInfoDTO;
+import org.server.enums.UserRole;
 import org.server.enums.genre;
 import org.server.router.annotations.mapping.GetMapping;
 import org.server.router.annotations.mapping.PostMapping;
 import org.server.router.annotations.mapping.RequestMapping;
+import org.server.router.annotations.request.RequestHeader;
 import org.server.router.annotations.request.RequestParam;
+import org.server.service.AuthService;
 import org.server.session.SessionManager;
 import org.server.util.ResponseEntity;
 import org.server.service.BrowseService;
@@ -177,8 +181,30 @@ public class BrowseController {
     }
 
     @GetMapping("/getAllSuggestions")
-    public ResponseEntity<List<BookDTO>> getAllSuggestions() {
+    public ResponseEntity<List<BookDTO>> getAllSuggestions(
+            @RequestHeader("Authorization") String authToken
+    ) {
         try {
+            //check if the user's role is admin
+            UserInfoDTO userInfo = AuthService.getUserDataByEmail(authToken);
+            if( userInfo == null) {
+                return ResponseEntity.status(401)
+                        .contentType("application/json")
+                        .body(null);
+            }
+            if(userInfo.getRole() != UserRole.ADMIN) {
+                return ResponseEntity.status(403)
+                        .contentType("application/json")
+                        .body(null);
+            }
+
+            if (userInfo == null || !userInfo.getRole().equals("admin")) {
+                return ResponseEntity.status(403)
+                        .contentType("application/json")
+                        .body(null);
+            }
+
+
             List<BookDTO> suggestions = BrowseService.getAllSuggestions();
             return ResponseEntity.ok()
                     .contentType("application/json")
@@ -194,6 +220,8 @@ public class BrowseController {
             @RequestParam(value = "title") String title,
             @RequestParam(value = "author") String author) {
         try {
+            System.out.println("Received title: " + title);
+            System.out.println("Received author: " + author);
             if (title == null || title.trim().isEmpty() || author == null || author.trim().isEmpty()) {
                 return ResponseEntity.status(400)
                         .contentType("application/json")
