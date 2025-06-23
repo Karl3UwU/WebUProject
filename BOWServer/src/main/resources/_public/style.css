@@ -668,6 +668,11 @@ body {
         transition: all 0.3s ease;
     }
 
+    .show-mobile {
+        opacity: 1 !important;
+        transform: translate(0, 0);
+    }
+
     .nav-links.active {
         transform: translateY(0);
         opacity: 1;

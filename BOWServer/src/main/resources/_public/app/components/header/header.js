@@ -11,15 +11,23 @@ class HeaderComponent {
     signup_btn: 'signup-btn',
     logout_btn: 'logout-btn',
     profile_btn: 'profile-btn',
+
+    mobileMenuToggle: 'mobileMenuToggle',
+    navLinks: 'navLinks',
   }
 
   mount = async (props) => {
     this.elements.logout_btn.addEventListener('click', async () => this.methods.logout_user())
+    this.elements.mobileMenuToggle.addEventListener('click', async () => this.methods.toggle_show_mobile())
 
     await this.methods.verify_login()
   }
 
   methods = {
+    toggle_show_mobile: async () => {
+      this.elements.navLinks.classList.toggle('show-mobile')
+    },
+
     verify_token: async () => {
       const authToken = window.localStorage.getItem('authToken')
       if(!authToken) {
