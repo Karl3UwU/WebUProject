@@ -671,6 +671,7 @@ body {
     .show-mobile {
         opacity: 1 !important;
         transform: translate(0, 0);
+        pointer-events: all;
     }
 
     .nav-links.active {
