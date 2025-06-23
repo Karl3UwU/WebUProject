@@ -44,24 +44,30 @@ Project Structure
 │   ├── main/
 │   │   ├── java/
 │   │   │   └── org/server/
-│   │   │       ├── controllers/      # API controllers (REST endpoints)
-│   │   │       ├── dto/              # Data Transfer Objects
-│   │   │       ├── enums/            # Enums (e.g., genre, UserRole)
-│   │   │       ├── model/            # Core domain models (Book, User, Review, etc.)
-│   │   │       ├── router/           # HTTP routing and annotations
-│   │   │       ├── service/          # Business logic/services
-│   │   │       ├── session/          # Session management
-│   │   │       └── util/             # Utilities (DB connection, etc.)
+│   │   │       ├── controllers/
+│   │   │       ├── dto/
+│   │   │       ├── enums/
+│   │   │       ├── model/
+│   │   │       ├── router/
+│   │   │       ├── service/
+│   │   │       ├── session/
+│   │   │       └── util/
 │   │   └── resources/
-│   │       ├── css/                  # Stylesheets
-│   │       ├── js/                   # Frontend JavaScript
-│   │       ├── sql/                  # Database schema and sample data
-│   │       ├── *.html                # HTML pages (SPA-like navigation)
-│   │       └── images/               # Static images/icons
-│   └── test/                         # (Optional) Unit/integration tests
-├── pom.xml                           # Maven build file
-├── .env                              # Environment variables (DB credentials, etc.)
-└── README.md                         # Project documentation
+│   │       ├── _public/
+│   │       │   ├── app/
+│   │       │   │   ├── assets/
+│   │       │   │   ├── components/
+│   │       │   │   ├── views/
+│   │       │   ├── core/
+│   │       │   ├── style.css
+│   │       │   └── index.html
+│   │       ├── sql/
+│   │       ├── images/
+│   │       └── sitemap/
+│   └── test/
+├── pom.xml
+├── .env
+└── README.md
 ```
 
 Database Schema
